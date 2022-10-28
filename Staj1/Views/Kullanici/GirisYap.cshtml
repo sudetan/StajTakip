@@ -1,0 +1,51 @@
+﻿@model Staj1.Models.Kullanici
+@{ ViewBag.Title = "UyeOl";
+    Layout = null; }
+@using System.Web;
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Styles/LoginCss.css" rel="stylesheet" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+
+<!------ Include the above in your HEAD tag ---------->
+
+
+<body class="body">
+
+
+    <style>
+        body {
+            background-image: url('../../Content/Logo/1.jpg');
+            background-size: cover;
+        }
+    </style>
+
+    <div class="wrapper">
+        <form class="form-signin" action="/Kullanici/GirisYap" method="post">
+            <h2 class="form-signin-heading">Please login</h2>
+            <input type="text" class="form-control" name="Numara" placeholder="Kullanıcı Adı" required="" autofocus="" />
+            <input type="password" class="form-control" name="Parola" placeholder="Şifre" required="" />
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+            </label>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        </form>
+    </div>
+</body>
+
+<script>
+    $(window).on("load", function () {
+        $(".loader-wrapper").fadeOut("slow");
+    });
+</script>
+
+
+
+
+
+
+
