@@ -146,13 +146,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Content Include="Content\CSS\Layout.css" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\EmailGondermeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KullaniciController.cs" />
     <Compile Include="Controllers\StajDefteriController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\MailRequest.cs" />
+    <Compile Include="Models\CodeFile1.cs" />
     <Compile Include="Models\GeriGonderilenBelgeler.cs" />
     <Compile Include="Models\Kullanici.cs" />
     <Compile Include="Models\KullaniciRol.cs" />
