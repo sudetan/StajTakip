@@ -7,7 +7,6 @@
 
 <script>
     function OgrenciKaydiSil(id) {
-
         if (confirm('Öğrenci Kaydı Silinsin mi?')) {
             var model = {
                 "id": id
@@ -20,7 +19,6 @@
                     location.reload();
                 }
             });
-
         }
     }
 </script>
@@ -102,7 +100,7 @@
                             <td style="">@item.Kullanici.BasvuruyuDegerlendiren</td>
                         }
 
-                        <td><button type="submit" class="btn btn-danger"><a onclick="OgrenciKaydiSil(@item.KullaniciID)"  style="color:white">Öğrenci Kaydını Sil</a></button></td>
+                        <td><button type="submit" class="btn btn-danger"><a onclick="OgrenciKaydiSil(@item.KullaniciID)" style="color:white">Öğrenci Kaydını Sil</a></button></td>
                     </tr>
                 }
             }
