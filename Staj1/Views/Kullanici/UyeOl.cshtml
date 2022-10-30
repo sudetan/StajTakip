@@ -1,7 +1,5 @@
-﻿@{
-    ViewBag.Title = "UyeOl";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@{ ViewBag.Title = "UyeOl";
+                Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
 
 <head>
 
@@ -14,7 +12,6 @@
     <script type="text/javascript">
         $(function () {
             $('#telefon_numarasi').mask("0(999) 999 99 99");
-
             $('#okul_numarasi').mask("99999999999");
         });
     </script>
@@ -26,7 +23,7 @@
     <div class="UyeOl-Baslik">
         <div class="UyeOl-IcerikAlani">
             <div style="margin-left:525px ">
-                <h1><b>Üye Ol</b></h1>
+                <h1><b>Kayıt Oluştur</b></h1>
             </div>
         </div>
         <br />
@@ -41,11 +38,12 @@
     <br />
 
     <div class="Uyemisin-cerceve">
+
         <form action="/Kullanici/UyeOl" method="post">
             <div class="Uyeol-form-block">
 
                 <div class="logo">
-                    <img src="~/Content/Logo/Uye_Ol_BSEU-Logo.png" />
+                    <img src="~/Content/Logo/Kouyenilogo.png" />
                 </div>
 
                 <div class="UyeMisin-baslik">
@@ -86,7 +84,7 @@
                     @*<label7>Parola Tekrar*</label7><br />*@
                     <input type="password" placeholder="Parola Tekrar" name="ParolaTekrar" required><br />
 
-                    <button type="submit">Kaydol</button>
+                    <button type="submit" value="Create">Kaydol</button>
                     <div class="UyeMisin-form-block">
                         <p style="font-weight: bold; font-style: italic;"><a style="color:red">*</a> ile işaretli alanların doldurulması zorunludur. <br /><br />Zaten Üye misiniz? <a href="/Kullanici/GirisYap" class="Uyemisin-a" style="color:magenta">Giriş Yap</a></p>
                     </div>
@@ -98,5 +96,3 @@
     </div>
     <br />
 </div>
-
-

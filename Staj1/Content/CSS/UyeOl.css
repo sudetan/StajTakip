@@ -11,9 +11,9 @@
     margin: 50px auto;
     max-width: 340px;
     background-color: white;
-    margin-left:10px;
-    margin-top:10px;
-    width:450px;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 450px;
 }
 
 .Uyemisin-cerceve {
@@ -32,8 +32,8 @@ input[type=text], input[type=password], input[type=email] {
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    text-align:center;
-    margin-left:30px;
+    text-align: center;
+    margin-left: 30px;
 }
 
 label1 {
@@ -41,7 +41,7 @@ label1 {
     font-style: italic;
     font-size: 20px;
     margin-left: 129px;
-    color:red;
+    color: red;
 }
 
 label2 {
@@ -96,7 +96,7 @@ label7 {
 .logo {
     /*text-align: center;*/
     margin: 16px 0 10px 0;
-    margin-left:120px;
+    margin-left: 120px;
 }
 
 button {
@@ -107,7 +107,7 @@ button {
     border: none;
     cursor: pointer;
     width: 22%;
-    margin-left:30px;
+    margin-left: 30px;
 }
 
     button:hover {
@@ -127,9 +127,9 @@ button {
     font-weight: bold;
     font-style: italic;
     /*margin-left: 510px;*/
-/*    background-color: white;
+    /*    background-color: white;
     width: 965px;*/
-    margin-left:150px;
+    margin-left: 150px;
 }
 
 .UyeMisin-p1 {
@@ -153,7 +153,7 @@ button {
     font-weight: bold;
     font-style: italic;
     text-align: center;
-    margin-top:-10px;
+    margin-top: -10px;
 }
 
 .UyeMisin-h3 {
@@ -161,7 +161,7 @@ button {
     font-style: italic;
     text-align: center;
     color: white;
-    margin-top:5px;    
+    margin-top: 5px;
 }
 
 .UyeMisin-h1 {
@@ -172,11 +172,11 @@ button {
     width: 800px;
     height: auto;
     margin-left: 170px;
-    color:white;
+    color: white;
 }
 
 .UyeOl-Baslik {
-    margin-top:10px;
+    margin-top: 10px;
     font-style: italic;
     height: auto;
     background-color: #E0F2F1;
@@ -194,15 +194,14 @@ button {
     background: #ccc;
 }
 
-.Uyemisin-a:hover{
-    opacity:0.2;
+.Uyemisin-a:hover {
+    opacity: 0.2;
 }
 
-.Mesaj-Kutu{
-    background-color:green;
+.Mesaj-Kutu {
+    background-color: green;
 }
 
-.Uyari-Kutu{
-    background-color:red;
+.Uyari-Kutu {
+    background-color: red;
 }
-

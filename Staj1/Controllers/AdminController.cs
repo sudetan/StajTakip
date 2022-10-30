@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿
+using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Staj1.Models;
 using System;
@@ -25,14 +26,14 @@ namespace Staj1.Controllers
 
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı,Kullanici")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Kullanici,SuperAdmin")]
         public ActionResult Index()
         {
             var data = context.KullaniciRol.Where(x => x.Kullanici.OnaylandiMi == false && x.Kullanici.Status == false).ToList();
 
             return View(data);
         }
-        
+
         public void OgrenciKaydiSil(int id)
         {
             var data = context.Kullanici.Where(x => x.KullaniciID == id).FirstOrDefault();
@@ -270,7 +271,7 @@ namespace Staj1.Controllers
             context.SaveChanges();
         }
 
-        
+
         [HttpGet]
         public ActionResult CikisYap()
         {
@@ -877,7 +878,7 @@ namespace Staj1.Controllers
         {
             var veriVarmi = context.Staj.Where(x => x.KullaniciID == id).OrderBy(x => x.Tarih).ToList();
 
-            if(veriVarmi.Count() == 0)
+            if (veriVarmi.Count() == 0)
             {
                 ViewBag.Mesaj = "Sisteme kayıtlı staj defteri bulunmamaktadır.";
                 return View();
@@ -972,8 +973,8 @@ namespace Staj1.Controllers
                 ws.Cells[string.Format("C{0}", rowStart)].Value = item.Numara;
                 ws.Cells[string.Format("D{0}", rowStart)].Value = item.Mail;
                 ws.Cells[string.Format("E{0}", rowStart)].Value = item.TelefonNo;
-                ws.Cells[string.Format("F{0}", rowStart)].Value = item.TelefonNo ;
-                ws.Cells[string.Format("G{0}", rowStart)].Value = item.BasvuruyuDegerlendiren ;
+                ws.Cells[string.Format("F{0}", rowStart)].Value = item.TelefonNo;
+                ws.Cells[string.Format("G{0}", rowStart)].Value = item.BasvuruyuDegerlendiren;
                 ws.Cells[string.Format("H{0}", rowStart)].Value = item.BasvuruDegerlendirmeTarihi.ToString().TrimEnd('0', ':');
                 ws.Cells[string.Format("I{0}", rowStart)].Value = item.StajDurum.StajDurumAdi;
                 rowStart++;
