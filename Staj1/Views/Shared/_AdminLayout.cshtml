@@ -6,6 +6,7 @@
 @using Staj1.Models
 @using System.Web;
 <meta charset="utf-8" />
+<title>Kou Takip Sistemi</title>
 <charset lang="tr" />
 <html>
 <head>
@@ -19,7 +20,7 @@
     @*<script src="~/Content/demo/demo.js"></script>*@
     @*<script src="~/Content/demo/SmoothScroll.min.js"></script>*@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
+    <link rel="icon" href="https://www.kocaeli.edu.tr/assets/ico/favicon.ico">
     <script src="~/ckeditor/ckeditor.js"></script>
 </head>
 
@@ -46,7 +47,7 @@
                             <img src="~/Content/Logo/Kouyenilogo.png" height="46">
                         </a>
 
-                        <h2 style="margin-top:15px;margin-left:365px;font-weight:bold;color:white" href="/Admin/Index">STAJ 1 DÖNEMİNE HOŞGELDİNİZ</h2>
+                        
 
                     </div>
 
@@ -61,7 +62,9 @@
                             </li>
 
 
-                            @if (User.IsInRole("Admin") || User.IsInRole("Eğitim Elemanı"))
+
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Eğitim Elemanı") || User.IsInRole("SuperAdmin"))
                             {
                                 <li class="dropdown-submenu">
                                     <a href="/Admin/Index">ADMİN PANELİ</a>
@@ -75,11 +78,17 @@
                                         <li><a href="/Admin/StajyerOgrenciStajaBaslatmaBilgileri">STAJYER ÖĞRENCİ STAJA BAŞLATMA BİLGİLERİ</a></li>
                                         <li><a href="/Admin/StajyerOgrenciStajDefterleri">STAJ DEFTERLERİ</a></li>
                                         <li><a href="/Admin/YetkiVer">YETKİ VER</a></li>
-                                        <li><a href="/Kullanici/UyeOl">KAYIT OLUŞTUR</a></li>
+                                        <li><a href="/Admin/KayitOlustur">KAYIT OLUŞTUR</a></li>
+                                        <hr>
+                                        <li>
+                                            <a href="/Home/Index">ÇIKIŞ YAP</a>
+                                        </li>
 
 
                                     </ul>
                                 </li>
+
+
                             }
 
                             @if (User.IsInRole("Kullanici"))
@@ -94,28 +103,33 @@
                                 <li class="dropdown-submenu">
                                     <a href="">KULLANICI PANELİ</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="/Kullanici/ProfiliDegistir">PROFİLİM</a></li>
+                                        <li><a href="/Kullanici/ProfiliDegistir">Profil Düzenle</a></li>
+
                                         @if (veri == false)
                                         {
-                                            <li class="dropdown-toggle"><a href="/Kullanici/DosyaYukle">STAJ BAŞVURUSU YAP</a></li>
+                                            <li class="dropdown-toggle"><a href="/Kullanici/DosyaYukle">Staj Başvurusu</a></li>
                                         }
-                                        <li class="dropdown-toggle"><a href="/Kullanici/GonderilenBelgelerim">GERİ GÖNDERİLEN BELGELERİM</a></li>
-                                        <li class="dropdown-toggle"><a href="/Kullanici/BasvuruBelgelerim">BAŞVURU BELGELERİM</a></li>
+                                        <li class="dropdown-toggle"><a href="/Kullanici/GonderilenBelgelerim">Geri Gönderilen Belgelerim</a></li>
+                                        <li class="dropdown-toggle"><a href="/Kullanici/BasvuruBelgelerim">Başvuru Belgelerim</a></li>
                                         @if (veri == false)
                                         {
-                                            <li class="dropdown-toggle"><a href="/Kullanici/StajBaslamaFormu">STAJ BAŞLANGIÇ FORMUNU DOLDUR</a></li>
+                                            <li class="dropdown-toggle"><a href="/Kullanici/StajBaslamaFormu">Staj Başvuru Formunu Doldur</a></li>
                                         }
-                                        <li class="dropdown-toggle"><a href="/Kullanici/StajBaslangicFormum">STAJ BAŞLANGIÇ FORMUM</a></li>
+                                        <li class="dropdown-toggle"><a href="/Kullanici/StajBaslangicFormum">Staj Başlangıç Formum</a></li>
                                         @if (veri == true && sob != null)
                                         {
                                             if (sdt != null)
                                             {
-                                                <li class="dropdown-toggle"><a href="/StajDefteri/GunlukYaz">STAJ DEFTERİNİ DOLDUR</a></li>
+                                                <li class="dropdown-toggle"><a href="/StajDefteri/GunlukYaz">Staj Defterini Doldur</a></li>
                                             }
-                                            @*<li class="dropdown-toggle"><a href="/StajDefteri/GunlukGuncelle">STAJ DEFTERİMİ DÜZENLE</a></li>*@
-                                            <li class="dropdown-toggle"><a href="/StajDefteri/YapilanIsler">STAJ DEFTERİM</a></li>
-                                            <li class="dropdown-toggle"><a href="/StajDefteri/StajDefteriniYukle">STAJ DEFTERİNİ GÖNDER</a></li>
+
+                                            <li class="dropdown-toggle"><a href="/StajDefteri/YapilanIsler">Staj Defterim</a></li>
+                                            <li class="dropdown-toggle"><a href="/StajDefteri/StajDefteriniYukle">Staj Defterini Gönder</a></li>
+                                            <hr>
+
+
                                         }
+                                        <li class="dropdown-toggle"><a href="/Home/Index">ÇIKIŞ YAP</a></li>
                                     </ul>
                                 </li>
                             }
@@ -164,15 +178,7 @@
                             string soyadi = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.Soyadi).FirstOrDefault();  //isimden kullanıcının soyadını alma
 
 
-                            <form method="post" action="/Kullanici/CikisYap">
-                                <a href="javascript:;" onclick="document.forms[0].submit();"><span style="font-family: 'Segoe Print'; font-size: 14px; font-weight: bold "> Hoş Geldin @adi @soyadi ÇIKIŞ YAP </span></a>
-                            </form>
-                        }
-                        else
-                        {
-                            @*<li><a href="/Kullanici/GirisYap"><span style="font-family:'Segoe Print';font-size:17px;font-weight:bold">GİRİŞ YAP</span></a></li>
-                                <li>/</li>
-                                <li><a href="/Kullanici/UyeOl"><span style="font-family:'Segoe Print';font-size:17px;font-weight:bold">ÜYE OL</span></a></li>*@
+
 
                         }
 
@@ -188,135 +194,46 @@
 
         </div>
 
-        <!--<section id="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <img src="/Content/Logo/logomuz.jpg" alt="EnaSoft Yazılım Hizmetleri" height="45">
-                    <p>Üniversitemiz ve bölümümüz hakkında daha fazla ve detaylı bilgi için sosyal medya hesaplarımızı takip edebilirsiniz.</p>
-                    <br>
-                    <ul class="list-unstyled list-inline social-icons">
-                        <li><a href="https://www.facebook.com/bilecik.bilgmuh.7" class="facebook"><i class="fa fa-facebook facebook"></i></a></li>
-                        <li><a href="https://twitter.com/bseubilgmuh" class="twitter"><i class="fa fa-twitter twitter"></i></a></li>
-                        <li><a href="https://www.instagram.com/bilecikbm/" class="instagram"><i class="fa fa-instagram instagram"></i></a></li>
-                        <li><a href="https://www.youtube.com/channel/UCgwHzd1y10sgOwtpf1zMckQ/featured" class="youtube"><i class="fa fa-youtube youtube"></i></a></li>
-                    </ul>
-
-
-                </div>
-
-
-                <div class="col-md-3">
-                    <div class="widget">
-                        <h4>İLETİŞİM</h4>
-                        <p><i class="fa fa-map-pin fa-fw"></i> Bilecik Şeyh Edebali Üniversitesi, Mühendislik Fakültesi, Bilgisayar Mühendisliği Bölümü, Gülümbe Yerleşkesi, C-Blok, Kat 3, 11210 Gülümbe/BİLECİK</p>
-                        <p><i class="fa fa-phone fa-fw"></i> 0 228 214 12 30</p>
-                        <p><i class="fa fa-phone fa-fw"></i> 0228 214 11 11(BŞEÜ Santral)</p>
-                        <p><i class="fa fa-envelope fa-fw"></i> <a href="mailto:bm_bb@bilecik.edu.tr">bm_bb@bilecik.edu.tr</a></p>
-                    </div>
-                </div>-->
-        @*<div id="map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3047.7488226261676!2d29.96746401538915!3d40.192402979391936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cc75e791df68d1%3A0x8152c406c8498209!2sBilecik%20%C5%9Eeyh%20Edebali%20%C3%9Cniversitesi!5e0!3m2!1str!2str!4v1633873989503!5m2!1str!2str" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>*@
-
-        <!--</div>
-
-
-
-                <div class="row">
-                    <hr>
-                    <div class="col-md-12 text-center bottom">
-                        <p>Copyright &copy; @DateTime.Now.Year. Tüm Hakları Saklıdır.</p>
-                    </div>
-                </div>
-            </div>
-        </section>-->
-        <!--<section id="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4" style="margin-left:-25px;margin-top:-4px">
-                    <img src="/Content/Logo/logomuz.jpg" alt="" height="35">
-                    <p style="margin-top:8px">Üniversitemiz ve bölümümüz hakkında daha fazla ve detaylı bilgi için sosyal medya hesaplarımızı takip edebilirsiniz.</p>
-                    <br>
-                </div>
-
-
-                <div class="col-md-4" style="margin-left:55px;margin-top:-12px">
-                    <div class="widget">
-                        <h4 style="font-weight:bold">İLETİŞİM</h4>
-                        <p style="margin-top:-15px">Bilecik Şeyh Edebali Üniversitesi, Mühendislik Fakültesi, Bilgisayar Mühendisliği Bölümü, Gülümbe Yerleşkesi, C-Blok, Kat 3, 11210 Gülümbe/BİLECİK</p>
-
-                    </div>
-                </div>
-
-                <div class="col-md-2" style="margin-top:-6px;margin-left:25px">
-                    <p><i class="fa fa-phone fa-fw"></i> 0 228 214 12 30</p>
-                    <p style="margin-top:-5px"><i class="fa fa-phone fa-fw"></i> 0228 214 11 11(BŞEÜ Santral)</p>
-                    <p style="margin-top:-5px"><i class="fa fa-envelope fa-fw"></i> <a href="mailto:bm_bb@bilecik.edu.tr">bm_bb@bilecik.edu.tr</a></p>
-                </div>
-
-                <div class="col-md-2" style="margin-top:-110px;margin-left:1050px">
-                    <ul class="list-unstyled list-inline social-icons">
-                        <li><a href="https://www.facebook.com/bilecik.bilgmuh.7" class="facebook"><i class="fa fa-facebook facebook"></i></a></li>
-                        <li><a href="https://twitter.com/bseubilgmuh" class="twitter"><i class="fa fa-twitter twitter"></i></a></li>
-                        <li><a href="https://www.instagram.com/bilecikbm/" class="instagram"><i class="fa fa-instagram instagram"></i></a></li>
-                        <li><a href="https://www.youtube.com/channel/UCgwHzd1y10sgOwtpf1zMckQ/featured" class="youtube"><i class="fa fa-youtube youtube"></i></a></li>
-                    </ul>
-                </div>
-
-
-                <div class="row">
-
-                    <div class="col-md-12 text-center bottom" style="margin-top:-23px">
-                        <p>Copyright &copy; Burak Çalışkan. Tüm Hakları Saklıdır.</p>
-                    </div>
-                </div>-->
-        @*<div id="map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3047.7488226261676!2d29.96746401538915!3d40.192402979391936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cc75e791df68d1%3A0x8152c406c8498209!2sBilecik%20%C5%9Eeyh%20Edebali%20%C3%9Cniversitesi!5e0!3m2!1str!2str!4v1633873989503!5m2!1str!2str" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>*@
-        <!--</div>
-            </div>
-        </section>-->
+        
 
         <section id="footer">
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
-                        <img src="/Content/Logo/logomuz.jpg" alt="Bilecik Şeyh Edebali Üniversitesi" height="45">
+                        <img src="~/Content/Logo/Kouyenilogo.png" alt="Kocaeli Üniversitesi" height="45"><br>
                         <p>Üniversitemiz ve bölümümüz hakkında daha fazla ve detaylı bilgi için sosyal medya hesaplarımızı takip edebilirsiniz.</p>
                         <br>
                         <ul class="list-unstyled list-inline social-icons">
-                            <li><a href="https://www.facebook.com/bilecik.bilgmuh.7" class="facebook"><i class="fa fa-facebook facebook"></i></a></li>
-                            <li><a href="https://twitter.com/bseubilgmuh" class="twitter"><i class="fa fa-twitter twitter"></i></a></li>
-                            <li><a href="https://www.instagram.com/bilecikbm/" class="instagram"><i class="fa fa-instagram instagram"></i></a></li>
-                            <li><a href="https://www.youtube.com/channel/UCgwHzd1y10sgOwtpf1zMckQ/featured" class="youtube"><i class="fa fa-youtube youtube"></i></a></li>
+                            <li><a href="https://wwwfacebook.com/kou92official" class="facebook"><i class="fa fa-facebook facebook"></i></a></li>
+                            <li><a href="https://twitter.com/kou92official" class="twitter"><i class="fa fa-twitter twitter"></i></a></li>
+                            <li><a href="https://wwwinstagram.com/kou92official" class="instagram"><i class="fa fa-instagram instagram"></i></a></li>
+                            <li><a href="https://www.youtube.com/c/kocaeliuniversitesi" class="youtube"><i class="fa fa-youtube youtube"></i></a></li>
                         </ul>
                     </div>
-
-
-                    <div class="col-md-4">
-                        <div class="widget">
-                            <h4>İLETİŞİM</h4>
-                            <p><i class="fa fa-map-pin fa-fw"></i> Bilecik Şeyh Edebali Üniversitesi, Mühendislik Fakültesi, Bilgisayar Mühendisliği Bölümü, Gülümbe Yerleşkesi, C-Blok, Kat 3, 11210 Gülümbe/BİLECİK</p>
-                            <p><i class="fa fa-phone fa-fw"></i>  0228 214 11 11(BŞEÜ Santral)</p>
-                            <p><i class="fa fa-envelope fa-fw"></i> <a href="mailto:bm_bb@bilecik.edu.tr">bm_bb@bilecik.edu.tr</a></p>
-                        </div>
+                    <div class="col-sm-4">
+                        <p><b>İletişim Bilgilerimiz</b></p>
+                        <p>
+                            <i class="fa fa-home"></i>
+                            Adres:
+                            Kocaeli Üniversitesi
+                            Umuttepe Yerleşkesi
+                            41001, İzmit/KOCAELİ
+                        </p>
+                        <p>
+                            <i class="fa fa-phone"></i>
+                            Telefon: +90 (262) 303 10 00
+                        </p>
+                        <p>
+                            <i class="fa fa-fax"></i>
+                            Fax: +90 (262) 303 10 33
+                        </p>
+                        <p>
+                            <i class="fa fa-envelope"></i>
+                            Mail: kocaeliuniversitesi@hs01.kep.tr
+                        </p>
                     </div>
-
-                    <div class="col-md-4">
-                        <div id="map">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3047.7488226261676!2d29.96746401538915!3d40.192402979391936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cc75e791df68d1%3A0x8152c406c8498209!2sBilecik%20%C5%9Eeyh%20Edebali%20%C3%9Cniversitesi!5e0!3m2!1str!2str!4v1633873989503!5m2!1str!2str" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <hr>
-                        <div class="col-md-12 text-center bottom">
-                            <p>Copyright &copy; @DateTime.Now.Year Burak Çalışkan. Tüm Hakları Saklıdır.</p>
-                        </div>
-                    </div>
-                </div>
         </section>
+
 
     </div>
 

@@ -25,7 +25,7 @@
 
 <br />
 
-@if (User.IsInRole("Admin"))
+@if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
 {
     <p style="text-align: center;font-size:19px"><a style="font-style: italic; font-weight: bold;color:black">Açıklama:</a> Kayıtlı olan tüm kullanıcılar ve bu kullanıcılara ait bilgilere aşağıdaki listeden ulaşabilirsiniz.</p>
 

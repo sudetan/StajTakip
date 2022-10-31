@@ -144,6 +144,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Content Include="Content\CSS\Layout.css" />
+    <Content Include="Content\Logo\pdf.png" />
     <Content Include="Content\Styles\AdminLayout.css" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1486,7 +1487,7 @@
     <Content Include="Views\Kullanici\StajBasvuruDosyasıSil.cshtml" />
     <Content Include="Views\Kullanici\StajDosyaYukleBasvuruDosyaSil.cshtml" />
     <Content Include="Views\Kullanici\Uyari.cshtml" />
-    <Content Include="Views\Kullanici\UyeOl.cshtml" />
+    <Content Include="Views\Admin\KayitOlustur.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\StajDefteri\DefterGuncelle.cshtml" />
     <Content Include="Views\StajDefteri\GunlukGuncelle.cshtml" />

@@ -90,7 +90,7 @@ namespace Staj1.Controllers
             return Json(son);
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,SuperAdmin")]
         public ActionResult DosyaYukle()
         {
             var kullaniciresult = context.Kullanici.Where(x => x.OnaylandiMi == false).ToList();
@@ -210,6 +210,47 @@ namespace Staj1.Controllers
 
             return View();
         }
+
+        public ActionResult KayitOlustur()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult KayitOlustur(Kullanici kl, string Parola, string ParolaTekrar)
+        {
+            kl.OnaylandiMi = false;
+            kl.AktifMi = false;
+            kl.KayıtTarihi = DateTime.Now;
+            kl.StajDurumID = 5;
+            kl.StajBaslatilsinMi = false;
+            kl.Status = false;
+
+            if (Parola == ParolaTekrar)
+            {
+                context.Kullanici.Add(kl);
+                context.SaveChanges();
+                ViewBag.Mesaj = "Üyelik işleminiz başarıyla gerçekleştirilmiştir.";
+
+                Rol kullanici = context.Rol.FirstOrDefault(x => x.RolAdi == "Admin");
+                KullaniciRol kr = new KullaniciRol();
+                kr.RolID = kullanici.RolID;
+                kr.KullaniciID = kl.KullaniciID;
+
+                context.KullaniciRol.Add(kr);
+                context.SaveChanges();
+                Response.Redirect("KayitOlustur", true);
+                return View();
+            }
+
+            else
+            {
+                ViewBag.Uyari = "Şifreleriniz eşleşmemektedir. Lütfen parolanızı tekrardan kontrol ediniz!";
+                return View();
+            }
+        }
+
 
         [Authorize(Roles = "Admin,Kullanici,Eğitim Elemanı")]
         public ActionResult DosyaSil(string adi)
@@ -609,35 +650,7 @@ namespace Staj1.Controllers
 
             foreach (var item in data)
             {
-                //if (item.StajDurum.StajDurumID == 1)
-                //{
-                //    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                //    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("green")));
-                //}
-
-                //if (item.StajDurum.StajDurumID == 2)
-                //{
-                //    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                //    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("blue")));
-                //}
-
-                //if (item.StajDurum.StajDurumID == 3)
-                //{
-                //    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                //    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#FFEB3B"));
-                //}
-
-                //if (item.StajDurum.StajDurumID == 4)
-                //{
-                //    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                //    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("orange")));
-                //}
-
-                //if (item.StajDurum.StajDurumID == 5)
-                //{
-                //    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                //    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("red")));
-                //}
+               
 
                 ws.Cells[string.Format("A{0}", rowStart)].Value = item.Kullanici.Adi;
                 ws.Cells[string.Format("B{0}", rowStart)].Value = item.Kullanici.Soyadi;

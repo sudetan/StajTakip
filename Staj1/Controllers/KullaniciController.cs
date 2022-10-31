@@ -35,46 +35,7 @@ namespace StajTakip.Controllers
 
             return View(listele);
         }
-        public ActionResult UyeOl()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        public ActionResult UyeOl(Kullanici kl, string Parola, string ParolaTekrar)
-        {
-            kl.OnaylandiMi = false;
-            kl.AktifMi = false;
-            kl.KayıtTarihi = DateTime.Now;
-            kl.StajDurumID = 5;
-            kl.StajBaslatilsinMi = false;
-            kl.Status = false;
-
-            if (Parola == ParolaTekrar)
-            {
-                context.Kullanici.Add(kl);
-                context.SaveChanges();
-                ViewBag.Mesaj = "Üyelik işleminiz başarıyla gerçekleştirilmiştir.";
-
-                Rol kullanici = context.Rol.FirstOrDefault(x => x.RolAdi == "Kullanici");
-                KullaniciRol kr = new KullaniciRol();
-                kr.RolID = kullanici.RolID;
-                kr.KullaniciID = kl.KullaniciID;
-
-                context.KullaniciRol.Add(kr);
-                context.SaveChanges();
-                Response.Redirect("UyeOl", true);
-                return View();
-            }
-
-            else
-            {
-                ViewBag.Uyari = "Şifreleriniz eşleşmemektedir. Lütfen parolanızı tekrardan kontrol ediniz!";
-                return View();
-            }
-        }
-
+       
         public ActionResult GirisYap()
         {
             return View();
@@ -260,63 +221,7 @@ namespace StajTakip.Controllers
             return View();
         }
 
-        //[Authorize(Roles = "Kullanici")]
-
-        //public ActionResult StajDosyaYukleBasvuruDosyaSil(string adi)
-        //{
-        //    var dosya = context.StajBasvuruBelgeleri.Where(m => m.BelgeAdi == adi).SingleOrDefault();
-        //    return View(dosya);
-        //}
-
-        //[HttpPost]
-        //public ActionResult StajDosyaYukleBasvuruDosyaSil(string adi, FormCollection collection)
-        //{
-        //    var dosya = context.StajBasvuruBelgeleri.Where(m => m.BelgeAdi == adi).FirstOrDefault();
-        //    if (dosya == null)
-        //    {
-        //        return RedirectToAction("DosyaYukle", "Kullanici");
-        //    }
-        //    if (System.IO.File.Exists(Server.MapPath("~/StajBasvuruBelgeleri/Belgeler/" + dosya.BelgeAdi)))
-        //    {
-        //        System.IO.File.Delete(Server.MapPath("~/StajBasvuruBelgeleri/Belgeler/" + dosya.BelgeAdi));
-
-        //    }
-
-        //    context.StajBasvuruBelgeleri.Remove(dosya);
-        //    context.Entry(dosya).State = System.Data.Entity.EntityState.Deleted;
-        //    context.SaveChanges();
-
-        //    return RedirectToAction("DosyaYukle", "Kullanici");
-        //}
-
-        //[Authorize(Roles = "Kullanici")]
-        //public ActionResult GeriGonderilenDosyaSil(string adi)
-        //{
-        //    var dosya = context.GeriGonderilenBelgeler.Where(m => m.BelgeAdi == adi).SingleOrDefault();
-        //    return View(dosya);
-        //}
-
-        //[HttpPost]
-        //public ActionResult GeriGonderilenDosyaSil(string adi, FormCollection collection)
-        //{
-        //    var dosya = context.GeriGonderilenBelgeler.Where(m => m.BelgeAdi == adi).FirstOrDefault();
-
-        //    if (dosya == null)
-        //    {
-        //        return RedirectToAction("GonderilenBelgelerim");
-        //    }
-        //    if (System.IO.File.Exists(Server.MapPath("~/GeriGonderilenEvraklar/Belgeler/" + dosya.BelgeAdi)))
-        //    {
-        //        System.IO.File.Delete(Server.MapPath("~/GeriGonderilenEvraklar/Belgeler/" + dosya.BelgeAdi));
-
-        //    }
-
-        //    context.GeriGonderilenBelgeler.Remove(dosya);
-        //    context.Entry(dosya).State = System.Data.Entity.EntityState.Deleted;
-        //    context.SaveChanges();
-
-        //    return RedirectToAction("GonderilenBelgelerim");
-        //}
+        
 
         [HttpPost]
         public ActionResult CikisYap()
@@ -368,34 +273,6 @@ namespace StajTakip.Controllers
             return View(listele);
 
         }
-
-        //public ActionResult StajBasvuruDosyasıSil(string adi)
-        //{
-        //    var dosya = context.StajBasvuruBelgeleri.Where(m => m.BelgeAdi == adi).SingleOrDefault();
-        //    return View(dosya);
-        //}
-
-        //[HttpPost]
-        //public ActionResult StajBasvuruDosyasıSil(string adi, FormCollection collection)
-        //{
-        //    var dosya = context.StajBasvuruBelgeleri.Where(m => m.BelgeAdi == adi).FirstOrDefault();
-
-        //    if (dosya == null)
-        //    {
-        //        return RedirectToAction("BasvuruBelgelerim");
-        //    }
-        //    if (System.IO.File.Exists(Server.MapPath("~/GeriGonderilenEvraklar/Belgeler/" + dosya.BelgeAdi)))
-        //    {
-        //        System.IO.File.Delete(Server.MapPath("~/GeriGonderilenEvraklar/Belgeler/" + dosya.BelgeAdi));
-
-        //    }
-
-        //    context.StajBasvuruBelgeleri.Remove(dosya);
-        //    context.Entry(dosya).State = System.Data.Entity.EntityState.Deleted;
-        //    context.SaveChanges();
-
-        //    return RedirectToAction("BasvuruBelgelerim");
-        //}
 
         public ActionResult Uyari()
         {
@@ -505,7 +382,7 @@ namespace StajTakip.Controllers
 
             ViewBag.Mesaj = "Staj Başvuru Formunuz Başarıyla Kaydedilmiştir.";
 
-            //Response.Redirect("StajBaslamaFormu", true);
+  
 
             return View(listele);
         }

@@ -91,12 +91,13 @@
             </div>
             <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
                 <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-                    <h1><a href="http://blog.stackfindover.com/" rel="dofollow">KOU Staj Takip Sistemi</a></h1>
+                    <h1>KOU Staj Takip Sistemi</h1>
                 </div>
+                
                 <div class="formbg-outer">
                     <div class="formbg">
                         <div class="formbg-inner padding-horizontal--48">
-                            <span class="padding-bottom--15">Sign in to your account</span>
+
                             <form id="stripe-login" action="/Kullanici/GirisYap" method="post">
                                 <div class="field padding-bottom--24">
                                     <label><b><i>Kullanıcı Adınız</i></b></label>
@@ -106,8 +107,12 @@
                                     <label><b><i>Şifreniz</i></b></label>
                                     <input type="password" placeholder="Şifre" name="Parola" required>
                                 </div>
+                                <p>@ViewBag.Uyari</p>
                                 <div class="field padding-bottom--24">
-                                    <input type="submit" name="submit" value="Continue">
+                                    <input type="submit" name="submit" value="Giriş Yap">
+                                </div>
+                                <div style="text-align: right; font-weight: bold; font-style: italic;">
+                                    <a href="/Kullanici/SifremiUnuttum"><b>Şifremi Unuttum/Güncelle</b></a><br />
                                 </div>
                             </form>
                         </div>
@@ -129,8 +134,7 @@
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+
 </body>
 
 </html>

@@ -128,74 +128,7 @@ namespace StajTakip.Controllers
 
 
 
-        //public ActionResult DefterGuncelle(int? id)
-        //{
-        //    var data = context.Staj.Where(x => x.StajID == id).FirstOrDefault();
-
-        //    return View(data);
-        //}
-
-        //[HttpPost]
-        //[ValidateInput(false)]
-        //public ActionResult DefterGuncelle(int? id, string baslik, string ckeditor, DateTime? tarih)
-        //{
-        //    string numara = User.Identity.Name;
-        //    int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
-        //    Staj gunluk = context.Staj.Where(x => x.StajID == id).FirstOrDefault();
-
-        //    gunluk.Baslik = baslik;
-        //    gunluk.Icerik = ckeditor;
-        //    gunluk.Tarih = tarih;
-        //    gunluk.KullaniciID = kullaniciId;
-
-        //    context.Entry(gunluk).State = System.Data.Entity.EntityState.Modified;
-        //    context.SaveChanges();
-
-        //    ViewBag.Mesaj = tarih + " li" +" Staj günlüğünüz güncellenmiştir.";
-
-        //    return View();
-        //}
-
-        //public ActionResult GunlukGuncelle(DateTime? tarih)
-        //{
-        //    string numara = User.Identity.Name;
-        //    int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
-        //    var data = context.Staj.Where(x => x.Tarih == tarih || x.KullaniciID == kullaniciId).FirstOrDefault();
-        //    ViewBag.gunluk = data;
-
-        //    return View(data);
-        //}
-
-        //[HttpPost]
-        //[ValidateInput(false)]
-        //public ActionResult GunlukGuncelle(DateTime? tarih, Staj staj, string baslik, string ckeditor)
-        //{
-        //    //var TArih = context.Staj.Select(x => x.Tarih).ToList();
-
-        //    string numara = User.Identity.Name;
-        //    int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
-        //    var gunluk = context.Staj.Where(x => x.Tarih == tarih && x.KullaniciID == kullaniciId).FirstOrDefault();
-        //    ViewBag.gunluk = gunluk;
-
-        //    if (gunluk == null)
-        //    {
-        //        ViewBag.Mesaj4 = "Öyle bir gün yok";
-        //        return View(gunluk);
-        //    }
-
-        //    //gunluk.Baslik = baslik;
-        //    //gunluk.Icerik = ckeditor;
-        //    //gunluk.Tarih = tarih;
-        //    ////gunluk.GunNo = gunluk.GunNo;
-        //    //gunluk.KullaniciID = kullaniciId;
-
-        //    //context.Entry(gunluk).State = System.Data.Entity.EntityState.Modified;
-        //    //context.SaveChanges();
-
-        //    ViewBag.Mesaj = tarih.Value.Date.ToString().TrimEnd('0', ':') + " li" + " staj günlüğünüze ait bilgiler aşağıdaki gibidir.";
-        //    return View(gunluk);
-        //}
-
+  
         public void GunSil(int id)
         {
             var data = context.Staj.Where(m => m.StajID == id).FirstOrDefault();
