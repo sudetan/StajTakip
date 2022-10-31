@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="CKFinder, Version=2.4.0.2631, Culture=neutral, PublicKeyToken=579e7adc719a1423, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Downloads\ckEditorTutorial\ckEditorTutorial\Scripts\ckfinder\bin\Release\CKFinder.dll</HintPath>
@@ -57,6 +60,9 @@
     </Reference>
     <Reference Include="EPPlus, Version=5.8.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.5.8.4\lib\net45\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=1.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -147,13 +153,16 @@
     <Content Include="Content\Logo\pdf.png" />
     <Content Include="Content\Styles\AdminLayout.css" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KullaniciController.cs" />
     <Compile Include="Controllers\StajDefteriController.cs" />
+    <Compile Include="FormReport\Form.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CodeFile1.cs" />
+    <Compile Include="Models\StajBasvuruForm.cs" />
     <Compile Include="Models\GeriGonderilenBelgeler.cs" />
     <Compile Include="Models\Kullanici.cs" />
     <Compile Include="Models\KullaniciRol.cs" />
@@ -1497,6 +1506,9 @@
     <Content Include="Views\StajDefteri\TakipCizelgesi.cshtml" />
     <Content Include="Views\StajDefteri\YapilanIsler.cshtml" />
     <Content Include="Views\Admin\BasvurusuTamamlananlarınListesi.cshtml" />
+    <Content Include="Views\Emailgonderme\EmailGonderme.cshtml" />
+    <Content Include="Views\Form\Form.cshtml" />
+    <Content Include="Views\Form\Form1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -21,7 +21,7 @@ namespace Staj1.Controllers
 
         public class kullanicilModel
         {
-            public List<Kullanici> kullanici { get; set; }
+            public List<Models.Kullanici> kullanici { get; set; }
             public List<StajDurum> stajdurum { get; set; }
 
         }
@@ -218,7 +218,7 @@ namespace Staj1.Controllers
 
 
         [HttpPost]
-        public ActionResult KayitOlustur(Kullanici kl, string Parola, string ParolaTekrar)
+        public ActionResult KayitOlustur(Models.Kullanici kl, string Parola, string ParolaTekrar)
         {
             kl.OnaylandiMi = false;
             kl.AktifMi = false;
@@ -240,7 +240,11 @@ namespace Staj1.Controllers
 
                 context.KullaniciRol.Add(kr);
                 context.SaveChanges();
-                Response.Redirect("KayitOlustur", true);
+                bool mailStatus = new EmailgondermeController().SendMail(kl);
+                if(!mailStatus)
+                {
+                    ViewBag.Mesaj = "Mail gönderilemedi.";
+                }
                 return View();
             }
 

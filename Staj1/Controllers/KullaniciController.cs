@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
+using Staj1.FormReport;
 
 namespace StajTakip.Controllers
 {
@@ -42,7 +43,7 @@ namespace StajTakip.Controllers
         }
 
         [HttpPost]
-        public ActionResult GirisYap(Kullanici kl)
+        public ActionResult GirisYap(Staj1.Models.Kullanici kl)
         {
             var kullaniciVarmi = context.Kullanici.FirstOrDefault(x => x.Numara == kl.Numara && x.Parola == kl.Parola);
 
@@ -281,14 +282,26 @@ namespace StajTakip.Controllers
             return View(data);
         }
 
+       
+
         [Authorize(Roles = "Kullanici")]
         public ActionResult StajBaslamaFormu()
         {
             string numara = User.Identity.Name;
             int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
             var listele = context.Kullanici.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault();
+            OgrenciReport ogrenciReport = new OgrenciReport();
+            byte[] abytes = ogrenciReport.ReportPdf(GetOgrenciler());
 
+            //return File(abytes, "application/pdf");
             return View(listele);
+        }
+
+        public List<StajBasvuruForm> GetOgrenciler()
+        {
+            List<StajBasvuruForm> ogreciler = new List<StajBasvuruForm>();
+            StajBasvuruForm ogrenci = new StajBasvuruForm();
+            return ogreciler;
         }
 
         [HttpPost]
@@ -714,7 +727,7 @@ namespace StajTakip.Controllers
         }
 
         [HttpPost]
-        public ActionResult GirisBilgileriAl(Kullanici model)
+        public ActionResult GirisBilgileriAl(Staj1.Models.Kullanici model)
         {
             MailMessage sifremail = new MailMessage();
             sifremail.To.Add(model.Mail); // kime , kullanıcı maili çekilecek

@@ -41,7 +41,7 @@ namespace StajTakipSistemi.App_Classes
         {
             if (!string.IsNullOrEmpty(username))
             {
-                Kullanici kl = context.Kullanici.FirstOrDefault(x => x.Numara == username);
+                Staj1.Models.Kullanici kl = context.Kullanici.FirstOrDefault(x => x.Numara == username);
                 if (kl != null)
                 {
                     return kl.KullaniciRol == null ? new string[] { } : kl.KullaniciRol.Select(x => x.Rol).Select(x => x.RolAdi).ToArray();

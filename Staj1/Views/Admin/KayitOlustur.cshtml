@@ -1,4 +1,5 @@
-﻿@{ ViewBag.Title = "KayitOlustur";
+﻿@model Staj1.Models.Kullanici
+@{ ViewBag.Title = "KayitOlustur";
                 Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
 
 <head>
@@ -38,59 +39,60 @@
     <br />
 
     <div class="Uyemisin-cerceve">
+ 
 
-        <form action="/Kullanici/UyeOl" method="post">
-            <div class="Uyeol-form-block">
+        <form action="/Admin/KayitOlustur" method="post">
+        <div class="Uyeol-form-block">
 
-                <div class="logo">
-                    <img src="~/Content/Logo/Kouyenilogo.png" />
-                </div>
+            <div class="logo">
+                <img src="~/Content/Logo/Kouyenilogo.png" />
+            </div>
 
-                <div class="UyeMisin-baslik">
-                    <h2 class="UyeMisin-h2">Yeni Kayıt</h2>
-                </div>
+            <div class="UyeMisin-baslik">
+                <h2 class="UyeMisin-h2">Yeni Kayıt</h2>
+            </div>
 
-                <div class="Mesaj-Kutu">
-                    <h3 class="UyeMisin-h3">@ViewBag.Mesaj</h3>
-                </div>
+            <div class="Mesaj-Kutu">
+                <h3 class="UyeMisin-h3">@ViewBag.Mesaj</h3>
+            </div>
 
-                <div class="Uyari-Kutu">
-                    <h3 class="UyeMisin-h3">@ViewBag.Uyari</h3>
-                </div>
+            <div class="Uyari-Kutu">
+                <h3 class="UyeMisin-h3">@ViewBag.Uyari</h3>
+            </div>
 
-                <div class="container">
-                    @*<label1>Adınız*</label1><br />*@
-                    <input type="text" placeholder="Ad" name="Adi" required><br />
+            <div class="container">
+                @*<label1>Adınız*</label1><br />*@
+                <input type="text" placeholder="Ad" name="Adi" required><br />
 
-                    @*<label2>Soyadınız*</label2><br />*@
-                    <input type="text" placeholder="Soyad" name="Soyadi" required><br />
+                @*<label2>Soyadınız*</label2><br />*@
+                <input type="text" placeholder="Soyad" name="Soyadi" required><br />
 
-                    <textarea type="text" rows="2" placeholder="Adres" name="Adres" style="width:250px;margin-left:30px;text-align:center" required></textarea><br />
+                <textarea type="text" rows="2" placeholder="Adres" name="Adres" style="width:250px;margin-left:30px;text-align:center" required></textarea><br />
 
-                    @*<label3>E-Posta Adresiniz*</label3><br />*@
-                    <input type="text" placeholder="E-Posta Adresi" name="Mail" required><br />
+                @*<label3>E-Posta Adresiniz*</label3><br />*@
+                <input type="text" placeholder="E-Posta Adresi" name="Mail" required><br />
 
-                    @*<label4>Okul Numaranız*</label4><br />*@
-                    <input type="text" placeholder="Okul Numarası" name="Numara" id="okul_numarasi" required><br />
+                @*<label4>Okul Numaranız*</label4><br />*@
+                <input type="text" placeholder="Okul Numarası" name="Numara" id="okul_numarasi" required><br />
 
-                    @*<label5>Telefon Numaranız*</label5><br />*@
-                    <input type="text" placeholder="0(---)/---/----" name="TelefonNo" id="telefon_numarasi" required><br />
+                @*<label5>Telefon Numaranız*</label5><br />*@
+                <input type="text" placeholder="0(---)/---/----" name="TelefonNo" id="telefon_numarasi" required><br />
 
-                    <input type="text" placeholder="Sınıf" name="Sinif" required><br />
+                <input type="text" placeholder="Sınıf" name="Sinif" required><br />
 
-                    @*<label6>Parola*</label6><br />*@
-                    <input type="password" placeholder="Parola" name="Parola" required><br />
+                @*<label6>Parola*</label6><br />*@
+                <input type="password" placeholder="Parola" name="Parola" required><br />
 
-                    @*<label7>Parola Tekrar*</label7><br />*@
-                    <input type="password" placeholder="Parola Tekrar" name="ParolaTekrar" required><br />
+                @*<label7>Parola Tekrar*</label7><br />*@
+                <input type="password" placeholder="Parola Tekrar" name="ParolaTekrar" required><br />
 
-                    <button type="submit" value="Create">Kaydol</button>
-                   
-                </div>
+                <button type="submit" value="Create">Kaydol</button>
 
             </div>
 
-        </form>
+        </div>
+
+    </form>
     </div>
     <br />
 </div>
