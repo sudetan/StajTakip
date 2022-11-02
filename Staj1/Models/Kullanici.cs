@@ -37,6 +37,7 @@ namespace Staj1.Models
         [StringLength(50)]
         public string Parola { get; set; }
 
+
         public DateTime? KayıtTarihi { get; set; }
 
         public bool? OnaylandiMi { get; set; }

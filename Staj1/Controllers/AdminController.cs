@@ -201,44 +201,71 @@ namespace Staj1.Controllers
 
         public ActionResult KayitOlustur(Models.Kullanici kl, string Parola, string sifre1)
         {
-
-
-
-
-            kl.OnaylandiMi = false;
-            kl.AktifMi = false;
-            kl.KayıtTarihi = DateTime.Now;
-            kl.StajDurumID = 5;
-            kl.StajBaslatilsinMi = false;
-            kl.Status = false;
-
-            sifre1 = Sifreleme.MD5Olustur(kl.Parola);
-
-
-
-            context.Kullanici.Add(kl);
-            context.SaveChanges();
-            ViewBag.Mesaj = "Üyelik işleminiz başarıyla gerçekleştirilmiştir.";
-
-            Rol kullanici = context.Rol.FirstOrDefault(x => x.RolAdi == "Kullanici");
-            KullaniciRol kr = new KullaniciRol();
-            kr.RolID = kullanici.RolID;
-            kr.KullaniciID = kl.KullaniciID;
-
-            context.KullaniciRol.Add(kr);
-            context.SaveChanges();
-            bool mailStatus = new EmailgondermeController().SendMail(kl);
-            if (!mailStatus)
-            {
-                ViewBag.Mesaj = "Mail gönderilemedi.";
-            }
+            var insertUser = InsertUser(kl);
             return View();
+
+            
         }
 
-    
-    
 
-    
+        public bool InsertUser(Kullanici kl)
+        {
+
+            try
+            {
+                kl.OnaylandiMi = false;
+                kl.AktifMi = false;
+                kl.KayıtTarihi = DateTime.Now;
+                kl.StajDurumID = 5;
+                kl.StajBaslatilsinMi = false;
+                kl.Status = false;
+
+                int length = 8;
+                const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                StringBuilder sifre = new StringBuilder();
+                Random rnd = new Random();
+                while (0 < length--)
+                {
+                    sifre.Append(valid[rnd.Next(valid.Length)]);
+                }
+
+                kl.Parola = sifre.ToString();
+                int nmr = Convert.ToInt32(kl.Numara);
+                context.Kullanici.Add(kl);
+                context.SaveChanges();
+                ViewBag.Mesaj = "Üyelik işleminiz başarıyla gerçekleştirilmiştir.";
+
+                Rol kullanici = context.Rol.FirstOrDefault(x => x.RolAdi == "Kullanici");
+                KullaniciRol kr = new KullaniciRol();
+
+                //kr.RolID = nmr > 9999 ? kullanici.RolID : 1;
+
+                kr.KullaniciID = kl.KullaniciID;
+
+                if (nmr > 9999)
+                {
+                    kr.RolID = 2;
+                }
+
+
+                context.KullaniciRol.Add(kr);
+                context.SaveChanges();
+                bool mailStatus = new EmailgondermeController().SendMail(kl);
+                if (!mailStatus)
+                {
+                    ViewBag.Mesaj = "Mail gönderilemedi.";
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+
 
 
         [Authorize(Roles = "Admin,Kullanici,Eğitim Elemanı")]
@@ -313,7 +340,7 @@ namespace Staj1.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon,SuperAdmin")]
         public ActionResult BasvuruDosyalari()
         {
             var kullaniciresult = context.Kullanici.Where(x => x.OnaylandiMi == false).ToList();
@@ -392,6 +419,7 @@ namespace Staj1.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Eğitim Elemanı")]
         public ActionResult StajDonemiBaslatDurdur(string StajBaslatilsinMi, string aciklama)
         {
             StajBaslatilsinMi data = context.StajBaslatilsinMi.Where(x => x.ID == 1).FirstOrDefault();
@@ -413,10 +441,10 @@ namespace Staj1.Controllers
             return View(data);
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
-        
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
+
+
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon,SuperAdmin")]
         public ActionResult StajBasvuruListesi()
         {
             var data = context.StajyerOgrenciBaslatma.Where(x => x.Kullanici.StajDurumID == 1).ToList();
@@ -543,7 +571,7 @@ namespace Staj1.Controllers
 
             foreach (var item in data)
             {
-               
+
 
                 ws.Cells[string.Format("A{0}", rowStart)].Value = item.Kullanici.Adi;
                 ws.Cells[string.Format("B{0}", rowStart)].Value = item.Kullanici.Soyadi;
@@ -811,7 +839,7 @@ namespace Staj1.Controllers
             return View(veriVarmi);
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon,SuperAdmin")]
         public ActionResult BasvurusuTamamlananlarınListesi()
         {
             var data = context.Kullanici.Where(x => x.StajDurumID == 8).ToList();
@@ -833,69 +861,8 @@ namespace Staj1.Controllers
             ViewBag.Mesaj1 = baslangicTarih.Value.Date.ToString().TrimEnd('0', ':') + " ve " + bitisTarih.Value.Date.ToString().TrimEnd('0', ':') + " " + " tarihleri arasındaki kayıtlar listelenmiştir.";
             return View(result);
         }
-
-
-        public void BasvurusuTamamlananlarListe(DateTime? baslangicTarih, DateTime? bitisTarih)
-        {
-            ExcelPackage.LicenseContext = LicenseContext.Commercial;
-            var result = context.Kullanici.Where(entry => entry.BasvuruDegerlendirmeTarihi >= baslangicTarih.Value).Where(entry => entry.BasvuruDegerlendirmeTarihi <= bitisTarih.Value).Where(entry => entry.OnaylandiMi == false && entry.StajDurumID == 8).ToList();
-
-            ExcelPackage exclPckg = new ExcelPackage();
-
-            ExcelWorksheet ws = exclPckg.Workbook.Worksheets.Add("Rapor");
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.Font.Size = 17;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.Font.Name = "Times New Roman";
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.Font.Bold = true;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.Font.Italic = true;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Size = 15;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Name = "Times New Roman";
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Italic = true;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Bold = false;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Color.SetColor(Color.Black);
-
-            ws.Cells["A1"].Value = "Staj 1 Tamamlananların Listesi";
-
-            ws.Cells["A2"].Value = "Tarih";
-            ws.Cells["B2"].Value = string.Format("{0:dd MMM yyyy} at {0:H: mm tt}", DateTimeOffset.Now);
-
-            ws.Cells["A6"].Value = "Öğrenci Adı";
-            ws.Cells["B6"].Value = "Öğrenci Soyadı";
-            ws.Cells["C6"].Value = "Öğrenci Numara";
-            ws.Cells["D6"].Value = "Öğrenci Adres ";
-            ws.Cells["E6"].Value = "Öğrenci E-Posta ";
-            ws.Cells["F6"].Value = "Öğrenci Tel No";
-            ws.Cells["G6"].Value = "Başvuruyu Değerlendiren ";
-            ws.Cells["H6"].Value = "Başvuruyu Değerlendirilme Tarihi ";
-            ws.Cells["I6"].Value = "Staj Durumu ";
-
-            int rowStart = 7;
-
-            foreach (var item in result)
-            {
-                ws.Cells[string.Format("A{0}", rowStart)].Value = item.Adi;
-                ws.Cells[string.Format("B{0}", rowStart)].Value = item.Soyadi;
-                ws.Cells[string.Format("C{0}", rowStart)].Value = item.Numara;
-                ws.Cells[string.Format("D{0}", rowStart)].Value = item.Mail;
-                ws.Cells[string.Format("E{0}", rowStart)].Value = item.TelefonNo;
-                ws.Cells[string.Format("F{0}", rowStart)].Value = item.TelefonNo;
-                ws.Cells[string.Format("G{0}", rowStart)].Value = item.BasvuruyuDegerlendiren;
-                ws.Cells[string.Format("H{0}", rowStart)].Value = item.BasvuruDegerlendirmeTarihi.ToString().TrimEnd('0', ':');
-                ws.Cells[string.Format("I{0}", rowStart)].Value = item.StajDurum.StajDurumAdi;
-                rowStart++;
-            }
-
-            ws.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.Charset = "windows-1254"; // Türkçe karakter seti
-            Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254"); // İçerik yani gelen verilerde Türkçe karakter seti
-            Response.HeaderEncoding = System.Text.Encoding.GetEncoding("windows-1254"); // Üst başlıklarda ki Türkçe karakter seti
-            Response.AddHeader("content-disposition", "attachment:filename=" + "BasvuruDurumu.xlsx"); // excell dosyasının adı ve yolu
-            Response.BinaryWrite(exclPckg.GetAsByteArray());
-            Response.End();
-        }
-
     }
 }
+
+
+       

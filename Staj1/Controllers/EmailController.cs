@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Office.Interop.Excel;
 using Staj1.Models;
 
 
@@ -17,6 +19,9 @@ namespace Staj1.Controllers
         {
             try
             {
+                
+                //model.Parola = sifre.ToString();
+
                 MailMessage sifremail = new MailMessage();
                 sifremail.To.Add(model.Mail); // kime , kullanıcı maili çekilecek
                 sifremail.From = new MailAddress("koustsmail@gmail.com"); // kimden, değişmeyecek

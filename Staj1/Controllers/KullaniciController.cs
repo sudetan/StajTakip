@@ -291,7 +291,7 @@ namespace StajTakip.Controllers
             string numara = User.Identity.Name;
             int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
             var listele = context.Kullanici.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault();
-
+           
             return View(listele);
 
         }
@@ -640,8 +640,8 @@ namespace StajTakip.Controllers
 
                 WebMail.SmtpServer = "smtp.gmail.com";
                 WebMail.EnableSsl = true;
-                WebMail.UserName = "CaliskanBurak97@gmail.com"; // E-Posta adresinin gönderileceği sunucu adres
-                WebMail.Password = "ones003880"; // E-posta adresinin şifresi
+                WebMail.UserName = "koustsmail@gmail.com"; // E-Posta adresinin gönderileceği sunucu adres
+                WebMail.Password = "vqrsjwkmzahicyum"; // E-posta adresinin şifresi
                 WebMail.SmtpPort = 587;
                 WebMail.Send(data.Mail, "Şifre Yenileme Doğrulama Kodu", "Doğrulama Kodunuz : " + kod);
 

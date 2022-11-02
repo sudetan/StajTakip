@@ -1,4 +1,4 @@
-﻿@model Staj1.Models.Kullanici
+﻿@model Staj1.Models.StajBasvuruForm
 
 @{
     ViewBag.Title = "StajBaslamaFormu";
@@ -325,7 +325,7 @@
                 <div class="bg-light rounded h-100 p-4">
                     <h6 class="mb-4"></h6>
                     <h3><b style="color: seagreen; text-align: center; enter; margin-left: 500px">Öğrenci Bilgileri</b></h3>
-                    <form>
+                    <form action="~/Kullanici/Form" method="post">
 
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Adı</label>

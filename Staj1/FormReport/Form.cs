@@ -128,7 +128,7 @@ namespace Staj1.FormReport
 
         public void ReportPdfBody()
         {
-
+            
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 1);
             pdfPCell = new PdfPCell(new Phrase("Ad Soyad", fontStyle));
             pdfPCell.Colspan = 1;
