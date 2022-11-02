@@ -2,20 +2,15 @@
 
 @using Staj1.Models
 
-@{
-    ViewBag.Title = "StajDefteriniYukle";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
+@{ ViewBag.Title = "StajDefteriniYukle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
 
-@{
-    Staj1DB context = new Staj1DB();
+@{ Staj1DB context = new Staj1DB();
 
     string numara = User.Identity.Name;
     int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
 
-    StajDefteriTeslim sdt = context.StajDefteriTeslim.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault();
-
-}
+    StajDefteriTeslim sdt = context.StajDefteriTeslim.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault(); }
 
 <head>
     <script src="~/Content/js/jquery.blockUI.js"></script>
@@ -25,6 +20,41 @@
     <script src="~/Content/js/jquery.MultiFile.js"></script>
     <script src="~/Content/js/jquery.MultiFile.pack.js"></script>
     <script src="~/Content/js/jquery.validate.js"></script>
+    <style>
+        * {
+            border: 0;
+            outline: 0;
+        }
+
+        label#largeFile:after {
+            position: absolute;
+            width: 45%;
+            max-width: 500px;
+            content: "Upload your file";
+            left: 0;
+            right: 0;
+            margin: 30px auto;
+            text-align: center;
+            padding: 50px 0px 50px 0px;
+            border-radius: 10px;
+            border: 5px dashed #ccc;
+            color: #ccc;
+            font-family: "Helvetica Neue", Helvetica, Arial;
+            font-size: 30px;
+        }
+
+        label#largeFile:hover:after {
+            background: #ccc;
+            color: #fff;
+            cursor: pointer;
+        }
+
+
+        label#largeFile input#file {
+            width: 0px;
+            height: 0px;
+        }
+    </style>
 </head>
 
 <link href="~/Content/js/basic.css" rel="stylesheet" />
@@ -60,81 +90,78 @@
 </script>
 
 <br />
-<p style="text-align: center"><a style="font-weight: bold;color:red">Açıklama:</a>  Lütfen staj defterinizi aşağıda bulunan alana yükleyiniz ve kaydediniz. Yüklemiş olduğunuz defterinizi <a style="font-style: italic;color:green; font-weight:bold">Kaydedilen Belgeniz  </a> bölümünde görüntüleyebilirsiniz.</p>
+<h3 style="text-align:center;font-weight:bold">Staj Defteri Yükle</h3>
+<hr />
 
 <br />
 
 @if (User.Identity.IsAuthenticated == true)
 {
-    <form action="/StajDefteri/StajDefteriniYukle" method="post" name="myDropzone1" id="myDropzone1" enctype="multipart/form-data">
-        <br />
-        <div>
-            <div id="previews" class="dz-default dz-message box__input dropzone" style="background-color: #E1F5FE ">
-                <div style="text-align:center">
-                    <i class="fa fa-cloud-upload" style="font-size:43px;position:relative;top:4px;"></i> <span style="margin-left:20px"><p style="font-size:25px">Lütfen yüklemek istediğiniz dosyayı seçiniz ya da bu alana sürükleyiniz.</p></span>
-                </div>
-            </div>
-            <br /><br />
-            <div style="text-align: center; border: 1px solid #000; padding: 8px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; width: 420px; margin-left: 355px; background-color: #FFEBEE ">
-                <h3 style="font-style: italic; font-weight: bold">Yüklenen Dosyanız</h3><hr style="border-width:9px" />
+<form action="/StajDefteri/StajDefteriniYukle" method="post" name="myDropzone1" id="myDropzone1" enctype="multipart/form-data">
+    <br />
+    <div>
+        <div id="previews" class="dz-default dz-message box__input dropzone">
+            <label id="largeFile" for="file">
+                <input type="file" id="file" />
+            </label><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
-                <div id="previewFiles" style="margin-top: -35px"></div><hr style="border-width:9px" />
-
-                @if (sdt == null)
-                {
-                <div style="text-align:center">
-                    <input type="submit" id="Submit" name="Submit" value="Kaydet" />
-                    <br /><br />
-
-                </div>
-                }
-
-            </div>
         </div>
         <br /><br />
-    </form>
-}
+              <div style="text-align: center; border: 1px solid #000; padding: 8px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; width: 420px; margin-left: 355px; background-color: #FFEBEE ">
+                  <h3 style="font-weight: bold">Yüklenen Belgeleriniz</h3><br /><br />
+
+                  <div id="previewFiles" style="margin-top: -35px"></div>
+
+                  @if (sdt == null)
+                  {
+              <div style="text-align:center">
+                  <input type="submit" id="Submit" name="Submit" value="Kaydet" style="background-color:gainsboro; font-weight:bold" />
 
 
-@*<p style="text-align:center"></p>
-    <br />*@
+              </div>
+                                  <br /><br />
+                                  }
 
-<p style="text-align: center"><a style="font-weight: bold;color:red">Açıklama:</a> Yüklemiş olduğunuz belgeniz kaydedildikten sonra aşağıda listelenecektir. Dilerseniz belgeyi indirip görüntüleyebilir ya da yüklenen belgenizi silip tekrardan yükleme işlemini gerçekleştirebilirsiniz.</p>
+
+              </div>
+    </div>
+    <br /><br />
+</form> } 
+
 
 <br />
 
-<h3 style="text-align: center; text-align: center; font-style: italic; font-weight: bold">Kaydedilen Belgeniz</h3>
+<h3 style=" text-align: center;  font-weight: bold">Kaydedilen Belgeniz</h3>
 <hr />
 
 @if (User.Identity.IsAuthenticated == true)
 {
-    <table class="table table-striped">
-        <thead>
-            <tr style="font-size:17px">
-                <th scope="col" style="font-weight:bold">Dosya Adı</th>
-                <th scope="col" style="font-weight:bold">Dosyayı İndir</th>
-                <th scope="col" style="font-weight:bold">Dosyayı Sil</th>
-                <th scope="col" style="font-weight:bold">Yükleme Tarihi</th>
-            </tr>
-        </thead>
-        <tbody>
+<table class="table table-striped">
+    <thead>
+        <tr style="font-size:17px">
+            <th scope="col" style="font-weight:bold">Dosya Adı</th>
+            <th scope="col" style="font-weight:bold">Dosyayı İndir</th>
+            <th scope="col" style="font-weight:bold">Dosyayı Sil</th>
+            <th scope="col" style="font-weight:bold">Yükleme Tarihi</th>
+        </tr>
+    </thead>
+    <tbody>
 
-            @foreach (var item in Model)
-            {
-                <tr tr style="font-size:17px">
-                    <td style=""><a href="@Url.Action("Goster", "Kullanici", new { dosya = @item.DosyaAdi })" target="_blank">@item.DosyaAdi</a></td>
-                    <td style=""><a href="@Url.Action("Download", "StajDefteri", new { file = @item.DosyaAdi })"><button type="submit" class="btn btn-info">İndir</button></a></td>
-                    @using (Html.BeginForm())
-                    {
-                        <td style=""><a onclick="DosyayıSil(@item.ID)"><button type="button" class="btn btn-danger ">Sil</button></a></td>
-                    }
-                    <td style="">@item.Tarih</td>
-
-                </tr>
-            }
-        </tbody>
-    </table>
+        @foreach (var item in Model)
+        {
+<tr tr style="font-size:17px">
+    <td style=""><a href="@Url.Action("Goster", "Kullanici", new { dosya = @item.DosyaAdi })" target="_blank">@item.DosyaAdi</a></td>
+    <td style=""><a href="@Url.Action("Download", "StajDefteri", new { file = @item.DosyaAdi })"><button type="submit" class="btn btn-info">İndir</button></a></td>
+    @using (Html.BeginForm())
+    {
+<td style=""><a onclick="DosyayıSil(@item.ID)"><button type="button" class="btn btn-danger ">Sil</button></a></td>
 }
+    <td style="">@item.Tarih</td>
+
+</tr>
+}
+    </tbody>
+</table>}
 
 <script>
 

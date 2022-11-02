@@ -1,5 +1,5 @@
 ﻿.arkaplan {
-    background-image: url('../Logo/Bilecik-Şeyh-Edebali-Üniversitesi.jpg');
+    background-image: url('../Logo/Kouyenilogo.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100% 100%;
@@ -124,8 +124,8 @@ button {
 }
 
 .UyeMisin-p {
-    font-weight: bold;
-    font-style: italic;
+/*    font-weight: bold;
+    font-style: italic;*/
     /*margin-left: 510px;*/
     /*    background-color: white;
     width: 965px;*/
@@ -151,7 +151,7 @@ button {
 
 .UyeMisin-h2 {
     font-weight: bold;
-    font-style: italic;
+/*    font-style: italic;*/
     text-align: center;
     margin-top: -10px;
 }
@@ -179,7 +179,7 @@ button {
     margin-top: 10px;
     font-style: italic;
     height: auto;
-    background-color: #E0F2F1;
+/*    background-color: #E0F2F1;*/
     color: white;
 }
 

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Extensions.Options;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Staj1.Models;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -26,7 +28,7 @@ namespace Staj1.Controllers
 
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı,Kullanici,SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin,Kullanici,Komisyon,Eğitim Elemanı")]
         public ActionResult Index()
         {
             var data = context.KullaniciRol.Where(x => x.Kullanici.OnaylandiMi == false && x.Kullanici.Status == false).ToList();
@@ -66,29 +68,6 @@ namespace Staj1.Controllers
             return Json(son);
         }
 
-        [HttpPost]
-        public JsonResult GeriGonderilenBelgeGetir(int id)
-        {
-            var dosya = context.GeriGonderilenBelgeler.Include("Kullanici").Where(m => m.KullaniciID == id);
-
-            List<GeriGonderilenBelgeler> son = new List<GeriGonderilenBelgeler>();
-
-            foreach (var item in dosya)
-            {
-
-                son.Add(new GeriGonderilenBelgeler
-                {
-                    ID = item.ID,
-                    BelgeAdi = item.BelgeAdi,
-                    KullaniciID = item.KullaniciID,
-                    Aciklama = item.Aciklama,
-                    Tarih = item.Tarih
-                });
-
-            }
-
-            return Json(son);
-        }
 
         [Authorize(Roles = "Admin,Eğitim Elemanı,SuperAdmin")]
         public ActionResult DosyaYukle()
@@ -169,7 +148,7 @@ namespace Staj1.Controllers
             return View(result);
         }
 
-        [Authorize(Roles = "Admin,Kullanici")]
+        [Authorize(Roles = "Admin,Kullanici,Eğitim Elemanı,SuperAdmin,Komisyon")]
         public FileResult Download(string file)
         {
             byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath("~/GeriGonderilenEvraklar/Belgeler/" + file + ""));
@@ -218,8 +197,14 @@ namespace Staj1.Controllers
 
 
         [HttpPost]
-        public ActionResult KayitOlustur(Models.Kullanici kl, string Parola, string ParolaTekrar)
+
+
+        public ActionResult KayitOlustur(Models.Kullanici kl, string Parola, string sifre1)
         {
+
+
+
+
             kl.OnaylandiMi = false;
             kl.AktifMi = false;
             kl.KayıtTarihi = DateTime.Now;
@@ -227,33 +212,33 @@ namespace Staj1.Controllers
             kl.StajBaslatilsinMi = false;
             kl.Status = false;
 
-            if (Parola == ParolaTekrar)
+            sifre1 = Sifreleme.MD5Olustur(kl.Parola);
+
+
+
+            context.Kullanici.Add(kl);
+            context.SaveChanges();
+            ViewBag.Mesaj = "Üyelik işleminiz başarıyla gerçekleştirilmiştir.";
+
+            Rol kullanici = context.Rol.FirstOrDefault(x => x.RolAdi == "Kullanici");
+            KullaniciRol kr = new KullaniciRol();
+            kr.RolID = kullanici.RolID;
+            kr.KullaniciID = kl.KullaniciID;
+
+            context.KullaniciRol.Add(kr);
+            context.SaveChanges();
+            bool mailStatus = new EmailgondermeController().SendMail(kl);
+            if (!mailStatus)
             {
-                context.Kullanici.Add(kl);
-                context.SaveChanges();
-                ViewBag.Mesaj = "Üyelik işleminiz başarıyla gerçekleştirilmiştir.";
-
-                Rol kullanici = context.Rol.FirstOrDefault(x => x.RolAdi == "Admin");
-                KullaniciRol kr = new KullaniciRol();
-                kr.RolID = kullanici.RolID;
-                kr.KullaniciID = kl.KullaniciID;
-
-                context.KullaniciRol.Add(kr);
-                context.SaveChanges();
-                bool mailStatus = new EmailgondermeController().SendMail(kl);
-                if(!mailStatus)
-                {
-                    ViewBag.Mesaj = "Mail gönderilemedi.";
-                }
-                return View();
+                ViewBag.Mesaj = "Mail gönderilemedi.";
             }
-
-            else
-            {
-                ViewBag.Uyari = "Şifreleriniz eşleşmemektedir. Lütfen parolanızı tekrardan kontrol ediniz!";
-                return View();
-            }
+            return View();
         }
+
+    
+    
+
+    
 
 
         [Authorize(Roles = "Admin,Kullanici,Eğitim Elemanı")]
@@ -328,7 +313,7 @@ namespace Staj1.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
         public ActionResult BasvuruDosyalari()
         {
             var kullaniciresult = context.Kullanici.Where(x => x.OnaylandiMi == false).ToList();
@@ -429,105 +414,9 @@ namespace Staj1.Controllers
         }
 
         [Authorize(Roles = "Admin,Eğitim Elemanı")]
-        //public ActionResult KayitSil()
-        //{
-        //    return RedirectToAction("Index", "Admin");
-        //}
+        
 
-        //[HttpPost]
-        //public ActionResult KayitSil(int[] customerIDs)
-        //{
-        //    if (customerIDs != null)
-        //    {
-        //        foreach (int customerId in customerIDs)
-        //        {
-        //            KullaniciRol rol = (from c in context.KullaniciRol
-        //                                where c.KullaniciID == customerId
-        //                                select c).FirstOrDefault();
-        //            context.KullaniciRol.Remove(rol);
-        //            context.SaveChanges();
-
-
-        //            StajBasvuruBelgeleri kullanici = (from c in context.StajBasvuruBelgeleri
-        //                                              where c.KullaniciID == customerId
-        //                                              select c).FirstOrDefault();
-        //            if (kullanici != null)
-        //            {
-        //                context.StajBasvuruBelgeleri.Remove(kullanici);
-        //                context.SaveChanges();
-        //            }
-
-        //            Kullanici customer = (from c in context.Kullanici
-        //                                  where c.KullaniciID == customerId
-        //                                  select c).FirstOrDefault();
-        //            context.Kullanici.Remove(customer);
-        //            context.SaveChanges();
-
-        //            StajyerOgrenciBaslatma veri = (from c in context.StajyerOgrenciBaslatma
-        //                                                where c.KullaniciID == customerId
-        //                                              select c).FirstOrDefault();
-        //            if (kullanici != null)
-        //            {
-        //                context.StajyerOgrenciBaslatma.Remove(veri);
-        //                context.SaveChanges();
-        //            }
-
-        //            Staj staj = (from c in context.Staj
-        //                                  where c.KullaniciID == customerId
-        //                                  select c).FirstOrDefault();
-        //            if (kullanici != null)
-        //            {
-        //                context.Staj.Remove(staj);
-        //                context.SaveChanges();
-        //            }
-        //        }
-
-        //    }
-        //    return Json("Kayıt Silme İşlemi Başarıyla Gerçekleştirilmiştir");
-        //}
-
-        //[Authorize(Roles = "Admin,Eğitim Elemanı")]
-        //public ActionResult OgrenciKayitSil(int id)
-        //{
-        //    var data = context.Kullanici.Where(x => x.KullaniciID == id).FirstOrDefault();
-
-        //    return View(data);
-        //}
-
-        //[HttpPost]
-        //public ActionResult OgrenciKayitSil(KullaniciRol kr, int id)
-        //{
-        //    var kullanici = context.KullaniciRol.Where(x => x.Kullanici.KullaniciID == id).FirstOrDefault();
-        //    var data = context.Kullanici.Where(x => x.KullaniciID == id).FirstOrDefault();
-        //    var belge = context.StajBasvuruBelgeleri.Where(x => x.KullaniciID == id).FirstOrDefault();
-        //    var gerigonderilenbelge = context.GeriGonderilenBelgeler.Where(x => x.KullaniciID == id).FirstOrDefault();
-
-        //    context.KullaniciRol.Remove(kullanici);
-        //    context.Entry(kullanici).State = System.Data.Entity.EntityState.Deleted;
-        //    context.SaveChanges();
-
-        //    if (belge != null)
-        //    {
-        //        context.StajBasvuruBelgeleri.Remove(belge);
-        //        context.Entry(belge).State = System.Data.Entity.EntityState.Deleted;
-        //        context.SaveChanges();
-        //    }
-
-        //    if (gerigonderilenbelge != null)
-        //    {
-        //        context.GeriGonderilenBelgeler.Remove(gerigonderilenbelge);
-        //        context.Entry(gerigonderilenbelge).State = System.Data.Entity.EntityState.Deleted;
-        //        context.SaveChanges();
-        //    }
-
-        //    context.Kullanici.Remove(data);
-        //    context.Entry(data).State = System.Data.Entity.EntityState.Deleted;
-        //    context.SaveChanges();
-
-        //    return RedirectToAction("Index", "Admin");
-        //}
-
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
         public ActionResult StajBasvuruListesi()
         {
             var data = context.StajyerOgrenciBaslatma.Where(x => x.Kullanici.StajDurumID == 1).ToList();
@@ -728,7 +617,7 @@ namespace Staj1.Controllers
             return gunSayi;
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
         public ActionResult StajyerOgrenciStajaBaslatmaBilgileri()
         {
             var data = context.StajyerOgrenciBaslatma.OrderBy(x => x.StajBaslangicTarihi).ToList();
@@ -834,7 +723,7 @@ namespace Staj1.Controllers
             Response.End();
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         public ActionResult YetkiVer()
         {
             var data = context.KullaniciRol.Where(x => x.Kullanici.OnaylandiMi == false).ToList();
@@ -842,7 +731,7 @@ namespace Staj1.Controllers
             return View(data);
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         public ActionResult YetkiBelirle(int id)
         {
             int kullaniciId = context.Kullanici.Where(x => x.KullaniciID == id).Select(x => x.KullaniciID).FirstOrDefault();
@@ -876,7 +765,7 @@ namespace Staj1.Controllers
             return View(kl);
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
         public ActionResult StajyerOgrenciStajDefterleri()
         {
             var data = context.StajDefteriTeslim.ToList();
@@ -890,7 +779,7 @@ namespace Staj1.Controllers
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, file);
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
         public ActionResult OgrenciStajDefteri(int? id)
         {
             var veriVarmi = context.Staj.Where(x => x.KullaniciID == id).OrderBy(x => x.Tarih).ToList();
@@ -922,7 +811,7 @@ namespace Staj1.Controllers
             return View(veriVarmi);
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
         public ActionResult BasvurusuTamamlananlarınListesi()
         {
             var data = context.Kullanici.Where(x => x.StajDurumID == 8).ToList();

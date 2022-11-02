@@ -10,6 +10,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
 using Staj1.FormReport;
+using Staj1.Controllers;
 
 namespace StajTakip.Controllers
 {
@@ -18,7 +19,7 @@ namespace StajTakip.Controllers
         Staj1DB context = new Staj1DB();
 
         // GET: Kullanici
-        [Authorize(Roles = "Admin,Eğitim Elemanı,Kullanici,SuperAdmin")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Kullanici,SuperAdmin,Komisyon")]
         public ActionResult Index()
         {
             string numara = User.Identity.Name;
@@ -290,11 +291,18 @@ namespace StajTakip.Controllers
             string numara = User.Identity.Name;
             int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
             var listele = context.Kullanici.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault();
+
+            return View(listele);
+
+        }
+
+        public FileContentResult Form(StajBasvuruForm form)
+        {
+            
             OgrenciReport ogrenciReport = new OgrenciReport();
             byte[] abytes = ogrenciReport.ReportPdf(GetOgrenciler());
 
-            //return File(abytes, "application/pdf");
-            return View(listele);
+            return File(abytes, "application/pdf");
         }
 
         public List<StajBasvuruForm> GetOgrenciler()
@@ -353,11 +361,11 @@ namespace StajTakip.Controllers
                 int tsonuc = resmiTatil;
                 int calismasuresi = sonuc - tsonuc;
 
-                if (calismasuresi > 30 || calismasuresi < 20)
-                {
-                    ViewBag.Mesaj1 = "Lütfen staj başlangıç ve bitiş tarihinizi yeniden seçiniz. Toplam çalışma gününüz hafta sonu ve resmi tatiller haricinde 20 günden az 30 günden fazla olmamalıdır.";
-                    return View(listele);
-                }
+                //if (calismasuresi > 30 || calismasuresi < 20)
+                //{
+                //    ViewBag.Mesaj1 = "Lütfen staj başlangıç ve bitiş tarihinizi yeniden seçiniz. Toplam çalışma gününüz hafta sonu ve resmi tatiller haricinde 20 günden az 30 günden fazla olmamalıdır.";
+                //    return View(listele);
+                //}
 
                 sob.HaftaIciGunSayisi = sonuc;
                 sob.ResmiTatilSayisi = tsonuc;
@@ -370,11 +378,11 @@ namespace StajTakip.Controllers
                 int tsonuc = resmiTatil;
                 int calismasuresi = sonuc - tsonuc;
 
-                if (calismasuresi > 30 || calismasuresi < 20)
-                {
-                    ViewBag.Mesaj1 = "Lütfen staj başlangıç ve bitiş tarihinizi yeniden seçiniz. Toplam çalışma gününüz pazar günü ve resmi tatiller haricinde 20 günden az 30 günden fazla olmamalıdır.";
-                    return View(listele);
-                }
+                //if (calismasuresi > 30 || calismasuresi < 20)
+                //{
+                //    ViewBag.Mesaj1 = "Lütfen staj başlangıç ve bitiş tarihinizi yeniden seçiniz. Toplam çalışma gününüz pazar günü ve resmi tatiller haricinde 20 günden az 30 günden fazla olmamalıdır.";
+                //    return View(listele);
+                //}
 
                 sob.HaftaIciGunSayisi = sonuc;
                 sob.ResmiTatilSayisi = tsonuc;

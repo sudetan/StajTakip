@@ -79,30 +79,6 @@
 
 <script>
 
-    //$(document).ready(function () {
-    //    //Kullanıcı seçilince
-    //    $('#KullaniciID').change(function () {
-    //        $('#StajDurumID').empty();
-    //        $.ajax({
-    //            type: 'POST',
-    //            url: '/Admin/BasvuruDurumu', // Basvuru Durumu metoduna git
-    //            dataType: 'json',
-    //            data: { id: $('#KullaniciID').val() },
-    //            // Kullanici id'ye göre veri getir.
-
-    //            success: function (basvuru) {
-    //                $.each(basvuru, function (i, basvuruadi) {
-    //                    $('#StajDurumID').append('<option value="' + basvuruadi.Value + '">' + basvuruadi.Text + '</option>');
-    //                });
-
-    //            },
-    //            error: function (ex) {
-    //                alert('Veri bulunamadı.');
-    //            }
-    //        });
-    //        return false;
-    //    })
-    //});
 
         $(document).ready(function () {
         //Kullanıcı seçilince
@@ -150,10 +126,7 @@
     <div style="text-align: center">
         <label style="font-style: italic ; font-weight:bold ; font-size:30px ;background-color:red;color:white" id="StajDurumID"></label>
     </div>
-    <hr />
-
-    <h3 style="text-align: center; font-style: italic"><a style="font-style: italic; font-weight: bold; background-color:blue;color:white">Açıklama:</a> Staj başvuru belgelerinin onay işlemini öğrenci bilgisini seçtikten sonra aşağıdaki listeden gerçekleştirebilirsiniz. </h3><br />
-    <h3 style="text-align: center; font-style: italic"><a style="font-style: italic; font-weight: bold; background-color:darkorange;color:white">Not:</a> Hatalı, yanlış ya da eksik gönderilen evraklar düzeltilip tekrar gönderildikten sonra sistem üzerinden onay durumunu tekrardan güncelleyebilirsiniz. </h3><br />
+   
 
 
     <select style="font-size: 25px; width: 538px ;text-align:center;margin-left:300px" name="stajDurumID" id="stajDurumID">
@@ -164,15 +137,7 @@
         }
     </select><br /><br />
 
-    <!--<select style="font-size: 25px; width: 538px; font-weight: bold; font-style: italic;text-align:center;margin-left:300px" name="StajDurumID" id="StajDurumID">
-
-        <option>Öğrenci Adını Seçiniz</option>-->
-    @*@foreach (var item in ViewBag.liste)
-        {
-            <option style="font-size:25px;font-weight:bold;font-style:italic" value="@item.StajDurumID">@item.StajDurumAdi</option>
-        }*@
-    <!--</select>-->
-
+                  
     <a><button id="delete" type='submit' class='btn btn-success' style="margin-top:-136px;margin-left:850px">Onayla</button></a>
 
 </form>

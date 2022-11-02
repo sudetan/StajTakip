@@ -7,18 +7,18 @@
 
 <br />
 
-<p style="text-align: center"><a style="font-weight: bold; text-align: center;color:red">Açıklama:</a> Seçilen kullanıcıya ait bilgiler aşağıda listelenmiştir. Lütfen kullanıcının yetki bilgisini seçtikten sonra onaylayınız.</p>
 
-<h3 style="font-weight: bold;text-align:center"><a style=" color:red"> Kullanıcı Bilgileri </h3>
+
+<h3 style="font-weight: bold;text-align:center"><a style=" color:seagreen"> Kullanıcı Bilgileri </h3>
 <hr />
 
 <form action="/Admin/YetkiBelirle" method="post">
 
-    <h3 style="font-weight: bold; font-style: italic ;text-align:center ;background-color:red ;color:white">@ViewBag.Mesaj</h3>
+    <h3 style="font-weight: bold; font-style: italic; text-align:center; background-color: lightseagreen; color: white">@ViewBag.Mesaj</h3>
 
     <h3 style="font-weight: bold; font-style: italic ;text-align:center ;color:green">@ViewBag.Mesaj1</h3>
 
-    <div style="border: 2px solid #000; padding: 8px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; width:650px; margin-left:250px">
+    <div style="border: 2px solid #000; padding: 8px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; width:650px; margin-left:250px; background-color:lightgrey">
 
         @if (Model != null)
         {
@@ -43,6 +43,7 @@
                 <option style="">Kullanici</option>
                 <option style="">Eğitim Elemanı</option>
                 <option style="">Admin</option>
+                <option style="">Komisyon</option>
             </select>
         }
         <br /><br />

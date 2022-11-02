@@ -44,20 +44,7 @@
         }
     }
 
-    //$(document).ready(function () {
-    //    $('.nav-toggle').click(function () {
-    //        var collapse_content_selector = $(this).attr('href');
-    //        var toggle_switch = $(this);
-    //        $(collapse_content_selector).toggle(function () {
-    //            if ($(this).css('display') == 'none') {
-    //                toggle_switch.html('Göster');
-    //            } else {
-    //                toggle_switch.html('Gizle');
-    //            }
-    //        });
-    //    });
-
-    //});
+    
 
     jQuery(function ($) {
         //ANA SAYFA DEVAMINI OKU
@@ -102,16 +89,16 @@
 
 </style>
 
-<h3 style="font-style: italic; font-weight: bold; text-align: center">Geri Gönderilen Belgelerim</h3>
+<h1 style="font-style: italic; font-weight: bold; text-align: center">Geri Gönderilen Belgelerim</h1>
 <hr />
 
-<p style="font-style: italic; font-weight: bold; color: #2E7D32; text-align: center; font-size:19px">@ViewBag.Mesaj</p>
-<p style="font-style: italic; font-weight: bold; color: #F44336; text-align: center; font-size: 19px ">@ViewBag.Mesaj1</p>
+@*<p style="font-style: italic; font-weight: bold; color: #2E7D32; text-align: center; font-size:19px">@ViewBag.Mesaj</p>
+<p style="font-style: italic; font-weight: bold; color: #F44336; text-align: center; font-size: 19px ">@ViewBag.Mesaj1</p>*@
 <br />
 
 @if (User.Identity.IsAuthenticated == true)
 {
-    <table class="table table-striped">
+    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
 
             <tr style="font-weight:bold;font-size:18px">
@@ -135,16 +122,6 @@
                     }
                     <td style="color:black">
 
-                        @*<div class="caticerik">
-                                <br>
-                                <span id="text">
-                                    @item.Aciklama
-                                </span>
-                            </div>
-
-                            <div class="devaminioku">
-                                <a href="#" id="toggle">Devamını Göster</a>
-                            </div>*@
 
                         <div class="caticerik">
                             @item.Aciklama

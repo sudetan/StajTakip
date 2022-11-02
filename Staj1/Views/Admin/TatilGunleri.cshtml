@@ -6,7 +6,7 @@
 }
 
 <br />
-<p style="font-size:19px"><a style="font-style: italic; font-weight: bold; color: black; margin-left: 365px">Açıklama:</a> Lütfen sene içindeki resmi tatil günlerini ekleyiniz. </p><hr />
+<p style="font-size:19px"><a style="margin-left: 365px">Açıklama:</a> Lütfen sene içindeki resmi tatil günlerini ekleyiniz. </p><hr />
 
 
 <script>
@@ -34,23 +34,24 @@
 
 <form action="/Admin/TatilGunleri" method="post">
 
-    <p style="font-style:italic;margin-left:460px">Lütfen tarih bilgisini seçiniz.</p>
+    <p style="margin-left:460px">Lütfen tarih bilgisini seçiniz.</p>
     <input type="date" name="resmitatiller" style="width:350px;margin-left:368px;text-align:center;font-size:17px" />
-    <p style="font-style:italic;margin-left:435px;margin-top:30px">Tarih ile ilgili açıklama metni girebilirsiniz.</p>
+    <p style="margin-left:435px;margin-top:30px">Tarih ile ilgili açıklama metni girebilirsiniz.</p>
     <textarea style="margin-left:270px;width:550px;text-align:center" rows="2" name="Aciklama"></textarea><br />
-    <button type='submit' class='btn btn-success' style="margin-left:500px">Tarihi Kaydet</button><br />
+    <button type='submit' class='btn btn-success' style="margin-left:400px; width:30%">Tarihi Kaydet</button><br />
     <br />
 </form>
 
-<h3 style="font-weight:bold;font-style:italic;margin-left:450px">Eklenilen Resmi Tatil Günleri</h3>
-<hr />
 
-<table class="table">
+<hr />
+<h3 style="font-weight:bold;font-style:italic;margin-left:450px">Eklenilen Resmi Tatil Günleri</h3>
+
+<<table  id="example" class="table table-striped table-bordered" cellspacing="0">
     <thead>
-        <tr style="font-size:19px;color:red">
-            <th scope="col" style="font-weight:bold;font-style:italic">Eklenilen Resmi Tatil Günleri</th>
-            <th scope="col" style="font-weight:bold;font-style:italic">Açıklama</th>
-            <th scope="col" style="font-weight:bold;font-style:italic">Tarihi Sil</th>
+        <tr style="font-size:19px">
+            <th scope="col" style="font-weight:bold;">Eklenilen Resmi Tatil Günleri</th>
+            <th scope="col" style="font-weight:bold;">Açıklama</th>
+            <th scope="col" style="font-weight:bold;">Tarihi Sil</th>
         </tr>
     </thead>
     <tbody>

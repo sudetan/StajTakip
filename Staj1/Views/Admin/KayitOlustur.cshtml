@@ -1,98 +1,132 @@
 ﻿@model Staj1.Models.Kullanici
 @{ ViewBag.Title = "KayitOlustur";
-                Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+   
+        Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
 
-<head>
+    <head>
 
-    <link href="~/Content/CSS/UyeOl.css" rel="stylesheet" />
+        <link href="~/Content/CSS/UyeOl.css" rel="stylesheet" />
 
-    <script type="text/javascript" src="~/Content/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="~/Content/jquery-3.1.1.min.js"></script>
 
-    <script type="text/javascript" src="~/Content/jquery.mask.min.js"></script>
+        <script type="text/javascript" src="~/Content/jquery.mask.min.js"></script>
 
-    <script type="text/javascript">
-        $(function () {
-            $('#telefon_numarasi').mask("0(999) 999 99 99");
-            $('#okul_numarasi').mask("99999999999");
-        });
-    </script>
+        <script type="text/javascript">
+            $(function () {
+                $('#telefon_numarasi').mask("0(999) 999 99 99");
+                $('#okul_numarasi').mask("99999999999");
+            });
+        </script>
+        <style 
+               * {
+            border: 0;
+            outline: 0;
+        }
 
-</head>
+        label#largeFile:after {
+            position: absolute;
+            width: 45%;
+            max-width: 500px;
+            content: "Upload your file";
+            left: 0;
+            right: 0;
+            margin: 30px auto;
+            text-align: center;
+            padding: 50px 0px 50px 0px;
+            border-radius: 10px;
+            border: 5px dashed #ccc;
+            color: #ccc;
+            font-family: "Helvetica Neue", Helvetica, Arial;
+            font-size: 30px;
+        }
 
-<div>
+        label#largeFile:hover:after {
+            background: #ccc;
+            color: #fff;
+            cursor: pointer;
+        }
 
-    <div class="UyeOl-Baslik">
-        <div class="UyeOl-IcerikAlani">
-            <div style="margin-left:525px ">
-                <h1><b>Kayıt Oluştur</b></h1>
-            </div>
+
+        label#largeFile input#file {
+            width: 0px;
+            height: 0px;
+        }
+
+    </style>
+
+    </head>
+
+    <div>
+
+        <h1 style="text-align:center"><b>Kayıt Oluştur</b></h1>
+        <hr />
+        <p style="text-align:center;margin-left:15px"><b>Kullanıcı eklemek için dosya ekleyiniz ya da bilgi ekranını doldurarak kayıt ekleyebilirsiniz.</b></p>
+        <label id="largeFile" for="file">
+            <input type="file" id="file" />
+        </label>
+
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+        <br />
+        <p class="UyeMisin-p1" style="text-align:center; margin-left:100px"> Bilgi ekranını doldurarak kayıt ekleyiniz.</p>
+
+        <br />
+
+        <div class="Uyemisin-cerceve" style="margin-left:250px; margin-right:200px; width:60%">
+
+
+            <form action="/Admin/KayitOlustur" method="post">
+                <div class="Uyeol-form-block" style="margin-left:180px;margin-right:200px; width:60%; margin-top:60px">
+
+                    <div class="logo" style="margin-left:180px">
+                        <img src="~/Content/Logo/Kouyenilogo.png" />
+                    </div>
+
+                   
+                        <h2 class="UyeMisin-h2">Yeni Kayıt</h2>
+                
+
+                    <div class="Mesaj-Kutu">
+                        <h3 class="UyeMisin-h3">@ViewBag.Mesaj</h3>
+                    </div>
+
+                    <div class="Uyari-Kutu">
+                        <h3 class="UyeMisin-h3">@ViewBag.Uyari</h3>
+                    </div>
+
+                    <div class="container">
+                        
+                        <input type="text" placeholder="Ad" name="Adi" required><br />
+
+                       
+                        <input type="text" placeholder="Soyad" name="Soyadi" required><br />
+
+                        <textarea type="text" rows="2" placeholder="Adres" name="Adres" style="width:250px;margin-left:30px;text-align:center" required></textarea><br />
+
+                       
+                        <input type="text" placeholder="E-Posta Adresi" name="Mail" required><br />
+
+                     
+                        <input type="text" placeholder="Okul Numarası" name="Numara" id="okul_numarasi" required><br />
+
+                       
+                        <input type="text" placeholder="0(---)/---/----" name="TelefonNo" id="telefon_numarasi" required><br />
+
+                        <input type="text" placeholder="Sınıf" name="Sinif" required><br />
+
+                        
+                        <input type="password" placeholder="Parola" name="Parola" required><br />
+
+
+
+                        <button type="submit" value="Create">Kaydol</button>
+
+                    </div>
+
+                </div>
+
+            </form>
         </div>
         <br />
     </div>
-    <hr />
-
-
-    
-    <br />
-    <p class="UyeMisin-p1"><a style="color:red">Not:</a> Lütfen bilgilerinizi eksiksiz şekilde doldurunuz.</p>
-
-    <br />
-
-    <div class="Uyemisin-cerceve">
- 
-
-        <form action="/Admin/KayitOlustur" method="post">
-        <div class="Uyeol-form-block">
-
-            <div class="logo">
-                <img src="~/Content/Logo/Kouyenilogo.png" />
-            </div>
-
-            <div class="UyeMisin-baslik">
-                <h2 class="UyeMisin-h2">Yeni Kayıt</h2>
-            </div>
-
-            <div class="Mesaj-Kutu">
-                <h3 class="UyeMisin-h3">@ViewBag.Mesaj</h3>
-            </div>
-
-            <div class="Uyari-Kutu">
-                <h3 class="UyeMisin-h3">@ViewBag.Uyari</h3>
-            </div>
-
-            <div class="container">
-                @*<label1>Adınız*</label1><br />*@
-                <input type="text" placeholder="Ad" name="Adi" required><br />
-
-                @*<label2>Soyadınız*</label2><br />*@
-                <input type="text" placeholder="Soyad" name="Soyadi" required><br />
-
-                <textarea type="text" rows="2" placeholder="Adres" name="Adres" style="width:250px;margin-left:30px;text-align:center" required></textarea><br />
-
-                @*<label3>E-Posta Adresiniz*</label3><br />*@
-                <input type="text" placeholder="E-Posta Adresi" name="Mail" required><br />
-
-                @*<label4>Okul Numaranız*</label4><br />*@
-                <input type="text" placeholder="Okul Numarası" name="Numara" id="okul_numarasi" required><br />
-
-                @*<label5>Telefon Numaranız*</label5><br />*@
-                <input type="text" placeholder="0(---)/---/----" name="TelefonNo" id="telefon_numarasi" required><br />
-
-                <input type="text" placeholder="Sınıf" name="Sinif" required><br />
-
-                @*<label6>Parola*</label6><br />*@
-                <input type="password" placeholder="Parola" name="Parola" required><br />
-
-                @*<label7>Parola Tekrar*</label7><br />*@
-                <input type="password" placeholder="Parola Tekrar" name="ParolaTekrar" required><br />
-
-                <button type="submit" value="Create">Kaydol</button>
-
-            </div>
-
-        </div>
-
-    </form>
-    </div>
-    <br />
-</div>

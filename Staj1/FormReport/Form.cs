@@ -34,11 +34,11 @@ namespace Staj1.FormReport
 
 
 
-        public byte[] ReportPdf(List<StajBasvuruForm> ogrenci)
+        public byte[] ReportPdf(List<StajBasvuruForm> form)
         {
 
 
-            ogrenciler = ogrenci;
+            ogrenciler = form;
             document = new Document(PageSize.A4, 0f, 0f, 0f, 0f);
             document.SetPageSize(PageSize.A4);
             document.SetMargins(20f, 20f, 20f, 20f);
