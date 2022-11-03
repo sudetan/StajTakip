@@ -645,7 +645,7 @@ namespace Staj1.Controllers
             return gunSayi;
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon,SuperAdmin")]
         public ActionResult StajyerOgrenciStajaBaslatmaBilgileri()
         {
             var data = context.StajyerOgrenciBaslatma.OrderBy(x => x.StajBaslangicTarihi).ToList();
@@ -793,7 +793,7 @@ namespace Staj1.Controllers
             return View(kl);
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon,SuperAdmin")]
         public ActionResult StajyerOgrenciStajDefterleri()
         {
             var data = context.StajDefteriTeslim.ToList();
@@ -807,7 +807,7 @@ namespace Staj1.Controllers
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, file);
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,Komisyon,SuperAdmin")]
         public ActionResult OgrenciStajDefteri(int? id)
         {
             var veriVarmi = context.Staj.Where(x => x.KullaniciID == id).OrderBy(x => x.Tarih).ToList();

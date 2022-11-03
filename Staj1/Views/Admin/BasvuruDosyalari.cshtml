@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 style="text-align:center;font-style:italic;font-weight:bold">Basvuru Dosyalari</h2>
+<h2 style="text-align:center;font-style:italic;font-weight:bold">Başvuru Dosyaları</h2>
 <hr />
 
 
@@ -111,7 +111,7 @@
 
     <h2 style="color: red; text-align: center; font-weight: bold; font-style: italic">@ViewBag.Uyari</h2>
 
-    <h3 style="text-align: center;font-style:italic"><a style="font-style: italic; font-weight: bold; background-color:red;color:white">Açıklama:</a> Lütfen öğrencilerin göndermiş olduğu staj başvuru belgelerine ulaşmak için açılır listede bulunan öğrencinin adını ve soyadını seçiniz.</h3><br />
+    <h3 style="text-align: center"><a style=" font-weight: bold;">Açıklama:</a> Lütfen öğrencilerin göndermiş olduğu staj başvuru belgelerine ulaşmak için açılır listede bulunan öğrencinin adını ve soyadını seçiniz.</h3><br />
 
     <select style="font-size: 25px; width: 538px;text-align:center;margin-left:300px" onchange="StajBasvuruBelgesiGetir()" name="KullaniciID" id="KullaniciID">
         <option>Lütfen Öğrenci Adını Ve Soyadını Seçiniz</option>
@@ -124,7 +124,7 @@
     <div id="BelgeGetir"></div>
 
     <div style="text-align: center">
-        <label style="font-style: italic ; font-weight:bold ; font-size:30px ;background-color:red;color:white" id="StajDurumID"></label>
+        <label style="font-weight:bold ; font-size:30px" id="StajDurumID"></label>
     </div>
    
 
@@ -137,8 +137,9 @@
         }
     </select><br /><br />
 
-                  
-    <a><button id="delete" type='submit' class='btn btn-success' style="margin-top:-136px;margin-left:850px">Onayla</button></a>
+                   <br /><br /><br /><br />
+
+    <a><button id="delete" type='submit' class='btn btn-success' style="font-size:larger;margin-top:-136px;margin-left:430px; width:20%">Onayla</button></a>
 
 </form>
 

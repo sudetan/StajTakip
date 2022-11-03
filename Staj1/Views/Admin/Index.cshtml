@@ -23,23 +23,6 @@
     }
 </script>
 
-@*<script>
-        function OgrenciKaydiSil(id) {
-            if (confirm('Öğrenci Kaydı Silinsin mi?')) {
-                var model = {
-                    "id": id
-                };
-                $.ajax({
-                    url: '/Admin/OgrenciKaydiSil',
-                    type: "POST",
-                    data: model,
-                    success: function (result) {
-                        location.reload();
-                    }
-                });
-            }
-        }
-    </script>*@
 
 <br />
 
@@ -97,7 +80,7 @@
                         {
                             <td style="font-weight:bold;font-style:italic;color:green">@item.Kullanici.StajDurum.StajDurumAdi</td>
                         }
-                        <a href="~/Views/Home/StajBilgilendirme.cshtml">~/Views/Home/StajBilgilendirme.cshtml</a>
+                      
                         @if (item.Kullanici.StajDurum.StajDurumID == 4)
                         {
                             <td style="font-weight:bold;font-style:italic;color:orange">@item.Kullanici.StajDurum.StajDurumAdi</td>
