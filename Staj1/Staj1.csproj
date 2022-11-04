@@ -1512,7 +1512,6 @@
     <Content Include="Views\Admin\DosyaSil.cshtml" />
     <Content Include="Views\Admin\DosyaYukle.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Admin\OgrenciStajDefteri.cshtml" />
     <Content Include="Views\Admin\StajBasvuruListesi.cshtml" />
     <Content Include="Views\Admin\StajDonemiBaslatDurdur.cshtml" />
     <Content Include="Views\Admin\StajyerOgrenciStajaBaslatmaBilgileri.cshtml" />
@@ -1535,7 +1534,6 @@
     <Content Include="Views\Kullanici\SifremiYenile.cshtml" />
     <Content Include="Views\Kullanici\StajBaslamaFormu.cshtml" />
     <Content Include="Views\Kullanici\StajBaslangicFormum.cshtml" />
-    <Content Include="Views\Kullanici\StajBaslangicFormunuGuncelle.cshtml" />
     <Content Include="Views\Kullanici\StajBasvuruDosyasıSil.cshtml" />
     <Content Include="Views\Kullanici\StajDosyaYukleBasvuruDosyaSil.cshtml" />
     <Content Include="Views\Kullanici\Uyari.cshtml" />
@@ -1553,7 +1551,6 @@
     <Content Include="Views\Form\Form.cshtml" />
     <Content Include="Views\Form\Form1.cshtml" />
     <Content Include="Views\Kullanici\Form.cshtml" />
-    <Content Include="Views\Excel\Excel1.cshtml" />
     <Content Include="Views\Excel\ExcelPage.cshtml" />
   </ItemGroup>
   <ItemGroup>

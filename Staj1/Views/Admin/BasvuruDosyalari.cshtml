@@ -117,8 +117,7 @@
         <option>Lütfen Öğrenci Adını Ve Soyadını Seçiniz</option>
         @foreach (var item in Model.kullanici)
         {
-            <option style="font-size:25px" value="@item.KullaniciID">@item.Adi @item.Soyadi</option>
-        }
+<option style="font-size:25px" value="@item.KullaniciID">@item.Adi @item.Soyadi</option>}
 
     </select>
     <div id="BelgeGetir"></div>
@@ -126,20 +125,19 @@
     <div style="text-align: center">
         <label style="font-weight:bold ; font-size:30px" id="StajDurumID"></label>
     </div>
-   
 
 
-    <select style="font-size: 25px; width: 538px ;text-align:center;margin-left:300px" name="stajDurumID" id="stajDurumID">
-        <option>Başvuru Durumu</option>
-        @foreach (var item in ViewBag.liste)
-        {
-            <option style="font-size:25px" value="@item.StajDurumID">@item.StajDurumAdi</option>
-        }
-    </select><br /><br />
+    @if (User.IsInRole("Komisyon") || User.IsInRole("Eğitim Elemanı"))
+    { <select style="font-size: 25px; width: 538px ;text-align:center;margin-left:300px" name="stajDurumID" id="stajDurumID">
+    <option>Başvuru Durumu</option>
+    @foreach (var item in ViewBag.liste)
+    {
+<option style="font-size:25px" value="@item.StajDurumID">@item.StajDurumAdi</option>}
+</select>}<br /><br />
 
-                   <br /><br /><br /><br />
+<br /><br /><br /><br />
 
-    <a><button id="delete" type='submit' class='btn btn-success' style="font-size:larger;margin-top:-136px;margin-left:430px; width:20%">Onayla</button></a>
+<a><button id="delete" type='submit' class='btn btn-success' style="font-size:larger;margin-top:-136px;margin-left:430px; width:20%">Onayla</button></a>
 
 </form>
 

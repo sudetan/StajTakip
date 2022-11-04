@@ -37,17 +37,17 @@
 
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
-        <tr style="color:red;font-size:17px">
+        <tr style="font-size:17px">
             <th scope="col" style="font-weight: bold; font-style: italic">Sıra No</th>
-            <th scope="col" style="font-weight:bold;font-style:italic"> Adı</th>
-            <th scope="col" style="font-weight:bold;font-style:italic"> Soyadı</th>
-            <th scope="col" style="font-weight:bold;font-style:italic"> Numarası</th>
-            <th scope="col" style="font-weight:bold;font-style:italic"> E-Posta</th>
-            <th scope="col" style="font-weight:bold;font-style:italic"> Tel No</th>
-            <th scope="col" style="font-weight:bold;font-style:italic"> Staj Başlangıç Tarihi</th>
-            <th scope="col" style="font-weight:bold;font-style:italic"> Staj Bitiş Tarihi</th>
-            <th scope="col" style="font-weight:bold;font-style:italic">Staj Durumu</th>
-            <th scope="col" style="font-weight:bold;font-style:italic">Başvuruyu Değerlendiren</th>
+            <th scope="col" style="font-weight:bold"> Adı</th>
+            <th scope="col" style="font-weight:bold"> Soyadı</th>
+            <th scope="col" style="font-weight:bold"> Numarası</th>
+            <th scope="col" style="font-weight:bold"> E-Posta</th>
+            <th scope="col" style="font-weight:bold"> Tel No</th>
+            <th scope="col" style="font-weight:bold"> Staj Başlangıç Tarihi</th>
+            <th scope="col" style="font-weight:bold"> Staj Bitiş Tarihi</th>
+            <th scope="col" style="font-weight:bold">Staj Durumu</th>
+            <th scope="col" style="font-weight:bold">Başvuruyu Değerlendiren</th>
         </tr>
     </thead>
     <tbody>
@@ -65,8 +65,7 @@
             <td style="">@item.StajBitisTarihi.ToString().TrimEnd('0', ':')</td>
             <td style="">@item.Kullanici.StajDurum.StajDurumAdi</td>
             <td style="">@item.Kullanici.BasvuruyuDegerlendiren</td>
-            <td><a href="@Url.Action("OgrenciStajDefteri", "Admin", new { id = @item.KullaniciID })"><button type="submit" class="btn btn-success">Staj Defterini İncele</button></a></td>
-
+            
         </tr>
             i++;
         }

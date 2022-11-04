@@ -68,7 +68,7 @@
                                     <a href="/Admin/Index">ADMİN PANELİ</a>
                                     <ul class="dropdown-menu">
 
-                                        <li><a href="/Admin/BasvuruDosyalari">STAJ BAŞVURU DOSYALARI</a></li>
+                                        <li><a href="/Admin/BasvuruDosyalari">STAJ DEĞERLENDİRME</a></li>
                                         <li><a href="/Admin/StajDonemiBaslatDurdur">STAJ DÖNEMİNİ BAŞLAT-DURDUR</a></li>
                                         <li><a href="/Admin/StajBasvuruListesi">BAŞVURUSU ONAYLANANLARIN LİSTESİ</a></li>
                                         <li><a href="/Admin/BasvurusuTamamlananlarınListesi">BAŞVURUSU TAMAMLANANLARIN LİSTESİ</a></li>
@@ -95,15 +95,42 @@
                                     <a href="/Admin/Index">KOMİSYON PANELİ</a>
                                     <ul class="dropdown-menu">
 
-                                        <li><a href="/Admin/BasvuruDosyalari">STAJ BAŞVURU DOSYALARI</a></li>
+                                        <li><a href="/Admin/BasvuruDosyalari">STAJ DEĞERLENDİRME</a></li>
                                         <li><a href="/Admin/StajDonemiBaslatDurdur">STAJ DÖNEMİNİ BAŞLAT-DURDUR</a></li>
                                         <li><a href="/Admin/StajBasvuruListesi">BAŞVURUSU ONAYLANANLARIN LİSTESİ</a></li>
                                         <li><a href="/Admin/BasvurusuTamamlananlarınListesi">BAŞVURUSU TAMAMLANANLARIN LİSTESİ</a></li>
-                                        
+
                                         <li><a href="/Admin/StajyerOgrenciStajaBaslatmaBilgileri">STAJYER ÖĞRENCİ STAJA BAŞLATMA BİLGİLERİ</a></li>
                                         <li><a href="/Admin/StajyerOgrenciStajDefterleri">STAJ DEFTERLERİ</a></li>
-                                       
-                                        
+
+
+                                        <hr>
+                                        <li>
+                                            <a href="/Home/Index">ÇIKIŞ YAP</a>
+                                        </li>
+
+
+                                    </ul>
+                                </li>
+
+
+                            }
+
+                            @if (User.IsInRole("Eğitim Elemanı"))
+                            {
+                                <li class="dropdown-submenu">
+                                    <a href="/Admin/Index">EĞİTİM ELEMANI PANELİ</a>
+                                    <ul class="dropdown-menu">
+
+                                        <li><a href="/Admin/BasvuruDosyalari">STAJ DEĞERLENDİRME</a></li>
+                                        <li><a href="/Admin/StajDonemiBaslatDurdur">STAJ DÖNEMİNİ BAŞLAT-DURDUR</a></li>
+                                        <li><a href="/Admin/StajBasvuruListesi">BAŞVURUSU ONAYLANANLARIN LİSTESİ</a></li>
+                                        <li><a href="/Admin/BasvurusuTamamlananlarınListesi">BAŞVURUSU TAMAMLANANLARIN LİSTESİ</a></li>
+
+                                        <li><a href="/Admin/StajyerOgrenciStajaBaslatmaBilgileri">STAJYER ÖĞRENCİ STAJA BAŞLATMA BİLGİLERİ</a></li>
+                                        <li><a href="/Admin/StajyerOgrenciStajDefterleri">STAJ DEFTERLERİ</a></li>
+
+
                                         <hr>
                                         <li>
                                             <a href="/Home/Index">ÇIKIŞ YAP</a>
@@ -138,16 +165,17 @@
                                         {
                                             <li class="dropdown-toggle"><a href="/Kullanici/DosyaYukle">Staj Başvurusu</a></li>
                                         }
-                                        <li class="dropdown-toggle"><a href="/Kullanici/GonderilenBelgelerim">Geri Gönderilen Belgelerim</a></li>
+
+
                                         <li class="dropdown-toggle"><a href="/Kullanici/BasvuruBelgelerim">Başvuru Belgelerim</a></li>
                                         @if (veri == false)
                                         {
                                             <li class="dropdown-toggle"><a href="/Kullanici/StajBaslamaFormu">Staj Başvuru Formunu Doldur</a></li>
                                         }
                                         <li class="dropdown-toggle"><a href="/Kullanici/StajBaslangicFormum">Staj Başlangıç Formum</a></li>
-                                        
+
                                         <li class="dropdown-toggle"><a href="/StajDefteri/StajDefteriniYukle">Staj Defterini Gönder</a></li>
-                                        <hr />s
+                                        <hr />
                                         <li class="dropdown-toggle"><a href="/Home/Index">ÇIKIŞ YAP</a></li>
                                     </ul>
                                 </li>

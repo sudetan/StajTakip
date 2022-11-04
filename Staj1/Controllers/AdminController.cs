@@ -207,6 +207,7 @@ namespace Staj1.Controllers
             
         }
 
+        [HttpPost]
 
         public bool InsertUser(Kullanici kl)
         {
@@ -238,14 +239,15 @@ namespace Staj1.Controllers
                 Rol kullanici = context.Rol.FirstOrDefault(x => x.RolAdi == "Kullanici");
                 KullaniciRol kr = new KullaniciRol();
 
-                //kr.RolID = nmr > 9999 ? kullanici.RolID : 1;
+                kr.RolID = kl.Numara.Length > 9999 ? kullanici.RolID : 1;
+                kr.KullaniciID = Convert.ToInt32(kl.Numara);
+                kr.Kullanici = kl;
 
-                kr.KullaniciID = kl.KullaniciID;
-
-                if (nmr > 9999)
-                {
-                    kr.RolID = 2;
-                }
+                //if (kl.Status == 0)
+                //{
+                //    // git şifre sıfırla ve Status alanını 1 ile değiştir.
+                //}
+                
 
 
                 context.KullaniciRol.Add(kr);
@@ -410,7 +412,7 @@ namespace Staj1.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,SuperAdmin,Komisyon")]
         public ActionResult StajDonemiBaslatDurdur()
         {
             var data = context.StajBaslatilsinMi.Where(x => x.ID == 1).FirstOrDefault();
@@ -419,7 +421,7 @@ namespace Staj1.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,SuperAdmin,Komisyon")]
         public ActionResult StajDonemiBaslatDurdur(string StajBaslatilsinMi, string aciklama)
         {
             StajBaslatilsinMi data = context.StajBaslatilsinMi.Where(x => x.ID == 1).FirstOrDefault();
@@ -454,149 +456,15 @@ namespace Staj1.Controllers
 
         public void BasvuruListesi()
         {
-            ExcelPackage.LicenseContext = LicenseContext.Commercial;
-            var data = context.Kullanici.Where(x => x.OnaylandiMi == false).ToList();
-
-            ExcelPackage exclPckg = new ExcelPackage();
-
-            ExcelWorksheet ws = exclPckg.Workbook.Worksheets.Add("Rapor");
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6"].Style.Font.Size = 17;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6"].Style.Font.Name = "Arial";
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6"].Style.Font.Bold = true;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6"].Style.Font.Italic = true;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130"].Style.Font.Size = 13;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130"].Style.Font.Italic = true;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130"].Style.Font.Bold = true;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130"].Style.Font.Color.SetColor(Color.White);
-
-            ws.Cells["A1"].Value = "Rapor Adı";
-            ws.Cells["B1"].Value = "Kullanıcı Başvuru Listesi";
-
-            ws.Cells["A2"].Value = "Tarih";
-            ws.Cells["B2"].Value = string.Format("{0:dd MMM yyyy} at {0:H: mm tt}", DateTimeOffset.Now);
-
-            ws.Cells["A6"].Value = "Öğrenci Adı";
-            ws.Cells["B6"].Value = "Öğrenci Soyadı";
-            ws.Cells["C6"].Value = "Öğrenci Numara";
-            ws.Cells["D6"].Value = "Staj Durumu ";
-
-            int rowStart = 7;
-
-            foreach (var item in data)
-            {
-                if (item.StajDurum.StajDurumID == 1)
-                {
-                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("green")));
-                }
-
-                if (item.StajDurum.StajDurumID == 2)
-                {
-                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("blue")));
-                }
-
-                if (item.StajDurum.StajDurumID == 3)
-                {
-                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#FFEB3B"));
-                }
-
-                if (item.StajDurum.StajDurumID == 4)
-                {
-                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("orange")));
-                }
-
-                if (item.StajDurum.StajDurumID == 5)
-                {
-                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    ws.Row(rowStart).Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(string.Format("red")));
-                }
-
-                ws.Cells[string.Format("A{0}", rowStart)].Value = item.Adi;
-                ws.Cells[string.Format("B{0}", rowStart)].Value = item.Soyadi;
-                ws.Cells[string.Format("C{0}", rowStart)].Value = item.Numara;
-                ws.Cells[string.Format("D{0}", rowStart)].Value = item.StajDurum.StajDurumAdi;
-                rowStart++;
-            }
-
-            ws.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.Charset = "windows-1254"; // Türkçe karakter seti
-            Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254"); // İçerik yani gelen verilerde Türkçe karakter seti
-            Response.HeaderEncoding = System.Text.Encoding.GetEncoding("windows-1254"); // Üst başlıklarda ki Türkçe karakter seti
-            Response.AddHeader("content-disposition", "attachment:filename=" + "BasvuruDurumu.xlsx"); // excell dosyasının adı ve yolu
-            Response.BinaryWrite(exclPckg.GetAsByteArray());
-            Response.End();
+            
         }
 
         public void BasvurusuOnaylananlarListe()
         {
-            ExcelPackage.LicenseContext = LicenseContext.Commercial;
-            var data = context.StajyerOgrenciBaslatma.Where(x => x.Kullanici.OnaylandiMi == false && x.Kullanici.StajDurumID == 1).ToList();
-
-            ExcelPackage exclPckg = new ExcelPackage();
-
-            ExcelWorksheet ws = exclPckg.Workbook.Worksheets.Add("Rapor");
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.Font.Size = 17;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.Font.Name = "Times New Roman";
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.Font.Bold = true;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6"].Style.Font.Italic = true;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Size = 15;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Name = "Times New Roman";
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Italic = true;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Bold = false;
-            ws.Cells["A7:A130:B7:B130:C7:C130:D7:D130:E130:F130:G130:H130:I130"].Style.Font.Color.SetColor(Color.Black);
-
-            ws.Cells["A1"].Value = "Staj 1 Onaylananların Listesi";
-
-            ws.Cells["A2"].Value = "Tarih";
-            ws.Cells["B2"].Value = string.Format("{0:dd MMM yyyy} at {0:H: mm tt}", DateTimeOffset.Now);
-
-            ws.Cells["A6"].Value = "Öğrenci Adı";
-            ws.Cells["B6"].Value = "Öğrenci Soyadı";
-            ws.Cells["C6"].Value = "Öğrenci Numara";
-            ws.Cells["D6"].Value = "E-Posta ";
-            ws.Cells["E6"].Value = "Öğrenci Tel No ";
-            ws.Cells["F6"].Value = "Staj Başlangıç Tarihi ";
-            ws.Cells["G6"].Value = "Staj Bitiş Tarihi ";
-            ws.Cells["H6"].Value = "Başvuruyu Değerlendiren ";
-            ws.Cells["I6"].Value = "Staj Durumu ";
-
-            int rowStart = 7;
-
-            foreach (var item in data)
-            {
-
-
-                ws.Cells[string.Format("A{0}", rowStart)].Value = item.Kullanici.Adi;
-                ws.Cells[string.Format("B{0}", rowStart)].Value = item.Kullanici.Soyadi;
-                ws.Cells[string.Format("C{0}", rowStart)].Value = item.Kullanici.Numara;
-                ws.Cells[string.Format("D{0}", rowStart)].Value = item.Kullanici.Mail;
-                ws.Cells[string.Format("E{0}", rowStart)].Value = item.Kullanici.TelefonNo;
-                ws.Cells[string.Format("F{0}", rowStart)].Value = item.StajBaslangicTarihi.ToString().TrimEnd('0', ':'); ;
-                ws.Cells[string.Format("G{0}", rowStart)].Value = item.StajBitisTarihi.ToString().TrimEnd('0', ':'); ;
-                ws.Cells[string.Format("H{0}", rowStart)].Value = item.Kullanici.BasvuruyuDegerlendiren;
-                ws.Cells[string.Format("I{0}", rowStart)].Value = item.Kullanici.StajDurum.StajDurumAdi;
-                rowStart++;
-            }
-
-            ws.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.Charset = "windows-1254"; // Türkçe karakter seti
-            Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254"); // İçerik yani gelen verilerde Türkçe karakter seti
-            Response.HeaderEncoding = System.Text.Encoding.GetEncoding("windows-1254"); // Üst başlıklarda ki Türkçe karakter seti
-            Response.AddHeader("content-disposition", "attachment:filename=" + "BasvuruDurumu.xlsx"); // excell dosyasının adı ve yolu
-            Response.BinaryWrite(exclPckg.GetAsByteArray());
-            Response.End();
+            
         }
 
-        [Authorize(Roles = "Admin,Eğitim Elemanı")]
+        [Authorize(Roles = "Admin,Eğitim Elemanı,SuperAdmin")]
         public ActionResult TatilGunleri()
         {
             var data = context.ResmiTatiller.OrderBy(x => x.ResmiTatil).ToList();
@@ -679,76 +547,7 @@ namespace Staj1.Controllers
 
         public void StajyerOgrenciStajaBaslatmaFormu(DateTime? baslangicTarih, DateTime? bitisTarih)
         {
-            ExcelPackage.LicenseContext = LicenseContext.Commercial;
-            var result = context.StajyerOgrenciBaslatma.Where(entry => entry.StajBaslangicTarihi >= baslangicTarih.Value).Where(entry => entry.StajBaslangicTarihi <= bitisTarih.Value).OrderBy(x => x.StajBaslangicTarihi).ToList();
-
-            ExcelPackage exclPckg = new ExcelPackage();
-
-            ExcelWorksheet ws = exclPckg.Workbook.Worksheets.Add("Rapor");
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6:J6:K6:L6:F1:F3:F5:A8:B8:C8:D8:E8:F8:G8:H8:I8:J8:K8:L8:M8"].Style.Font.Size = 17;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6:J6:K6:L6:F1:F3:F5:A8:B8:C8:D8:E8:F8:G8:H8:I8:J8:K8:L8:M8"].Style.Font.Name = "Times New Roman";
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6:J6:K6:L6:F1:F3:F5:A8:B8:C8:D8:E8:F8:G8:H8:I8:J8:K8:L8:M8"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6:J6:K6:L6:F1:F3:F5:A8:B8:C8:D8:E8:F8:G8:H8:I8:J8:K8:L8:M8"].Style.Font.Bold = true;
-            ws.Cells["A1:B1:A2:B2:A6:B6:C6:D6:E6:F6:G6:H6:I6:J6:K6:L6:F1:F3:F5:A8:B8:C8:D8:E8:F8:G8:H8:I8:J8:K8:L8:M8"].Style.Font.Italic = true;
-            ws.Cells["A9:A130:B9:B130:C9:C130:D9:D130:E9:E130:F9:F130:G9:G130:H9:H130:I9:I130:J9:J130:K9:K130:L9:L130:M130"].Style.Font.Size = 15;
-            ws.Cells["A9:A130:B9:B130:C9:C130:D9:D130:E9:E130:F9:F130:G9:G130:H9:H130:I9:I130:J9:J130:K9:K130:L9:L130:M130"].Style.Font.Name = "Times New Roman";
-            ws.Cells["A9:A130:B9:B130:C9:C130:D9:D130:E9:E130:F9:F130:G9:G130:H9:H130:I9:I130:J9:J130:K9:K130:L9:L130:M130"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            ws.Cells["A9:A130:B9:B130:C9:C130:D9:D130:E9:E130:F9:F130:G9:G130:H9:H130:I9:I130:J9:J130:K9:K130:L9:L130:M130"].Style.Font.Italic = true;
-            ws.Cells["A9:A130:B9:B130:C9:C130:D9:D130:E9:E130:F9:F130:G9:G130:H9:H130:I9:I130:J9:J130:K9:K130:L9:L130:M130"].Style.Font.Bold = false;
-            ws.Cells["A9:A130:B9:B130:C9:C130:D9:D130:E9:E130:F9:F130:G9:G130:H9:H130:I9:I130:J9:J130:K9:K130:L9:L130:M130"].Style.Font.Color.SetColor(Color.Black);
-
-
-            ws.Cells["F1"].Value = "Bilecik Şeyh Edebali Üniversitesi Mühendislik Fakültesi";
-            ws.Cells["F3"].Value = "Bilgisayar Mühendisliği Bölüm Başkanlığı";
-            ws.Cells["F5"].Value = "Stajyer Öğrenci Bölüm Staja Başlatma Formu";
-
-            //ws.Cells["A2"].Value = "Tarih";
-            //ws.Cells["B2"].Value = string.Format("{0:dd MMM yyyy} at {0:H: mm tt}", DateTimeOffset.Now);
-
-            ws.Cells["A8"].Value = "Adı Soyadı";
-            ws.Cells["B8"].Value = "TC Kimlik No";
-            ws.Cells["C8"].Value = "Öğrencinin Adresi";
-            ws.Cells["D8"].Value = "İş Yerinin Adı ";
-            ws.Cells["E8"].Value = "İş Yerinin Adresi ";
-            ws.Cells["F8"].Value = "Staja Başlama Tarihi";
-            ws.Cells["G8"].Value = "Stajın Bitiş Tarihi";
-            ws.Cells["H8"].Value = "Staj Süresince Denk Gelen Gün Sayısı";
-            ws.Cells["I8"].Value = "Staj Süresince Denk Gelen Resmi Tatil Sayısı ";
-            ws.Cells["J8"].Value = "Toplam Çalışma Günü";
-            ws.Cells["K8"].Value = "Cumartesi Çalışıyor Mu";
-            ws.Cells["L8"].Value = "Staj Türü";
-            ws.Cells["M8"].Value = "Onay Durumu";
-
-            int rowStart = 9;
-
-            foreach (var item in result)
-            {
-                ws.Cells[string.Format("A{0}", rowStart)].Value = item.Kullanici.Adi + " " + item.Kullanici.Soyadi;
-                ws.Cells[string.Format("B{0}", rowStart)].Value = item.Kullanici.Numara;
-                ws.Cells[string.Format("C{0}", rowStart)].Value = item.Kullanici.Adres;
-                ws.Cells[string.Format("D{0}", rowStart)].Value = item.IsyeriAdi;
-                ws.Cells[string.Format("E{0}", rowStart)].Value = item.IsyeriAdresi;
-                ws.Cells[string.Format("F{0}", rowStart)].Value = item.StajBaslangicTarihi.ToString().TrimEnd('0', ':');
-                ws.Cells[string.Format("G{0}", rowStart)].Value = item.StajBitisTarihi.ToString().TrimEnd('0', ':');
-                ws.Cells[string.Format("H{0}", rowStart)].Value = item.HaftaIciGunSayisi;
-                ws.Cells[string.Format("I{0}", rowStart)].Value = item.ResmiTatilSayisi;
-                ws.Cells[string.Format("J{0}", rowStart)].Value = item.ToplamCalismaSüresi;
-                ws.Cells[string.Format("K{0}", rowStart)].Value = item.CumartesiCalisiyorMu;
-                ws.Cells[string.Format("L{0}", rowStart)].Value = item.StajAdi.Adi;
-                ws.Cells[string.Format("M{0}", rowStart)].Value = item.Kullanici.StajDurum.StajDurumAdi;
-
-                rowStart++;
-            }
-
-            ws.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.Charset = "windows-1254"; // Türkçe karakter seti
-            Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254"); // İçerik yani gelen verilerde Türkçe karakter seti
-            Response.HeaderEncoding = System.Text.Encoding.GetEncoding("windows-1254"); // Üst başlıklarda ki Türkçe karakter seti
-            Response.AddHeader("content-disposition", "attachment:filename=" + "BasvuruDurumu.xlsx"); // excell dosyasının adı ve yolu
-            Response.BinaryWrite(exclPckg.GetAsByteArray());
-            Response.End();
+            
         }
 
         [Authorize(Roles = "SuperAdmin,Admin")]

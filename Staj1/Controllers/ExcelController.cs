@@ -33,11 +33,13 @@ namespace Staj1.Controllers
 
         [HttpPost]
 
-        public bool Index(HttpPostedFileBase file)
+        public ActionResult Index(HttpPostedFileBase file)
         {
-           
+
             InsertExceldata(file);
-            return false;
+            return RedirectToAction("KayitOlustur", "Admin");
+            ViewBag.Mesaj = "Üyelik işleminiz başarıyla gerçekleştirilmiştir.";
+
         }
 
         private void ExcelConn(string filepath)
@@ -117,29 +119,6 @@ namespace Staj1.Controllers
                 }
             }
         }
-        //{
-        //    string fullpath = Server.MapPath("/excelfolder/") + filename;
-        //    ExcelConn(fullpath);
-        //    string query = string.Format("Select * from [{0}]", "Sheet1$");
-        //    OleDbCommand Ecom = new OleDbCommand(query, Econ);
-        //    Econ.Open();
-
-        //    DataSet ds = new DataSet();
-        //    OleDbDataAdapter oda = new OleDbDataAdapter(query, Econ);
-        //    Econ.Close();
-        //    oda.Fill(ds);
-
-        //    DataTable dt = ds.Tables[0];
-
-        //    SqlBulkCopy objbulk = new SqlBulkCopy(con);
-        //    objbulk.DestinationTableName = "Kullanici";
-        //    objbulk.ColumnMappings.Add("Numara", "Numara");
-        //    objbulk.ColumnMappings.Add("Adi", "Adi");
-        //    objbulk.ColumnMappings.Add("Soyadi", "Soyadi");
-        //    objbulk.ColumnMappings.Add("Mail", "Mail");
-        //    con.Open();
-        //    objbulk.WriteToServer(dt);
-        //    con.Close();
-        //}
+        
     }
 }

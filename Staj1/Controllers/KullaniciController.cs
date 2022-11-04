@@ -47,8 +47,9 @@ namespace StajTakip.Controllers
         public ActionResult GirisYap(Staj1.Models.Kullanici kl)
         {
             var kullaniciVarmi = context.Kullanici.FirstOrDefault(x => x.Numara == kl.Numara && x.Parola == kl.Parola);
+            
 
-            if (kullaniciVarmi == null)
+                if (kullaniciVarmi == null)
             {
                 ViewBag.Uyari = "Kullanıcı ad veya şifreniz hatalıdır. Lütfen tekrar deneyiniz. ";
                 return View();
@@ -288,19 +289,21 @@ namespace StajTakip.Controllers
         [Authorize(Roles = "Kullanici")]
         public ActionResult StajBaslamaFormu()
         {
-            string numara = User.Identity.Name;
-            int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
-            var listele = context.Kullanici.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault();
-           
-            return View(listele);
+            //string numara = User.Identity.Name;
+            //int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
+            //var listele = context.Kullanici.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault();
+
+            //return View(listele);
+            return View();
 
         }
 
+        [HttpPost]
         public FileContentResult Form(StajBasvuruForm form)
         {
             
             OgrenciReport ogrenciReport = new OgrenciReport();
-            byte[] abytes = ogrenciReport.ReportPdf(GetOgrenciler());
+            byte[] abytes = ogrenciReport.ReportPdf(form);
 
             return File(abytes, "application/pdf");
         }
