@@ -1,5 +1,6 @@
 namespace Staj1.Models
 {
+    using PagedList;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -41,7 +42,7 @@ namespace Staj1.Models
         public DateTime? KayıtTarihi { get; set; }
 
         public bool? OnaylandiMi { get; set; }
-        public bool? Status { get; set; }
+        public bool Status { get; set; }
 
         public bool? AktifMi { get; set; }
         public bool? BasvuruYapildiMi { get; set; }
@@ -64,6 +65,12 @@ namespace Staj1.Models
         [StringLength(5)]
         public string Sinif { get; set; }
 
+        public string Bolum { get; set; }
+        public string Fakulte { get; set; }
+        public int? OgretmenId { get; set; }
+
+       
+
         public DateTime? BasvuruDegerlendirmeTarihi { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -85,5 +92,11 @@ namespace Staj1.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StajyerOgrenciBaslatma> StajyerOgrenciBaslatma { get; set; }
+    }
+
+    partial class KullaniciListe
+    {
+        public int? SayfaNumarasi { get; set; }
+        //public IPagedList<Kullanici>  { get; set; }
     }
 }

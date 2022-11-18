@@ -12,6 +12,9 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using PagedList;
+using PagedList.Mvc;
+
 
 namespace Staj1.Controllers
 {
@@ -31,9 +34,20 @@ namespace Staj1.Controllers
         [Authorize(Roles = "Admin,SuperAdmin,Kullanici,Komisyon,Eğitim Elemanı")]
         public ActionResult Index()
         {
-            var data = context.KullaniciRol.Where(x => x.Kullanici.OnaylandiMi == false && x.Kullanici.Status == false).ToList();
 
-            return View(data);
+            var kullanicilar = context.Kullanici.Where(x => x.OgretmenId == 2419).ToList();
+
+            List<KullaniciRol> kullaniciRolList = new List<KullaniciRol>();
+
+            foreach (var item in kullanicilar)
+            {
+                var dataKRol = context.KullaniciRol.Where(x => x.KullaniciID == item.KullaniciID).FirstOrDefault();
+                kullaniciRolList.Add(dataKRol);
+            }
+
+
+
+            return View(kullaniciRolList);
         }
 
         public void OgrenciKaydiSil(int id)
@@ -239,7 +253,7 @@ namespace Staj1.Controllers
                 Rol kullanici = context.Rol.FirstOrDefault(x => x.RolAdi == "Kullanici");
                 KullaniciRol kr = new KullaniciRol();
 
-                kr.RolID = kl.Numara.Length > 9999 ? kullanici.RolID : 1;
+                kr.RolID = kl.Numara.Length > 9999 ? kullanici.RolID : 2;
                 kr.KullaniciID = Convert.ToInt32(kl.Numara);
                 kr.Kullanici = kl;
 
@@ -361,6 +375,8 @@ namespace Staj1.Controllers
 
         public JsonResult BasvuruDurumu(int? id)
         {
+
+           
             ViewBag.liste = context.StajDurum.Where(x => x.Gizle == true).Select(x => x.StajDurumAdi).ToList();
 
             List<Kullanici> kullaniciliste = context.Kullanici.Where(f => f.KullaniciID == id).OrderBy(f => f.StajDurum.StajDurumAdi).ToList();
@@ -373,7 +389,21 @@ namespace Staj1.Controllers
 
                                              }).ToList();
 
+
             return Json(itemlist, JsonRequestBehavior.AllowGet);
+
+            //    bool mailStatus = new EmailgondermeController().SendMail(kullaniciresult);
+            //    if (!mailStatus)
+            //    {
+            //        ViewBag.Mesaj = "Mail gönderilemedi.";
+            //    }
+
+            //    return true;
+            //}
+            //    catch (Exception ex)
+            //    {
+            //        return false;
+            //    }
         }
 
         [HttpPost]
@@ -402,6 +432,11 @@ namespace Staj1.Controllers
                 context.Entry(kl).State = System.Data.Entity.EntityState.Modified;
                 context.SaveChanges();
 
+                bool mailStatus = new EmailgondermeController2().SendMail2(kl);
+                if (!mailStatus)
+                {
+                    ViewBag.Uyari = "Mail gönderilemedi.";
+                }
                 return View(result);
             }
 

@@ -403,7 +403,7 @@ pre {
 
 #title {
     display: block;
-    background-color: #EEE;
+    background-color: #FFF;
     width: 100%;
     min-height: 140px;
     padding-top: 58px;
@@ -412,7 +412,7 @@ pre {
     #title .breadcrumbs {
         padding-top: 34px;
         font-size: 12px;
-        color: #888;
+        color:#ffffff;
     }
 
 

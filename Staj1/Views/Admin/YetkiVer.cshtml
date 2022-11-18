@@ -36,21 +36,21 @@
 
             @if (item.Rol.RolAdi == "Eğitim Elemanı")
             {
-        <td style=" font-weight: bold ; color: blue">@item.Rol.RolAdi</td>
+        <td style=" font-weight: bold ; color: seagreen">@item.Rol.RolAdi</td>
 }
 
             @if (item.Rol.RolAdi == "Kullanici")
             {
-        <td style="font-weight: bold; color: blue"> @item.Rol.RolAdi </td>
+        <td style="font-weight: bold; color: seagreen"> @item.Rol.RolAdi </td>
 }
 
             @if (item.Rol.RolAdi == "Admin")
             {
-        <td style=" font-weight: bold ; color: blue">@item.Rol.RolAdi</td>}
+        <td style=" font-weight: bold ; color: seagreen">@item.Rol.RolAdi</td>}
 
             @if (item.Rol.RolAdi == "Komisyon")
             {
-        <td style=" font-weight: bold ; color: blue">@item.Rol.RolAdi</td>}
+        <td style=" font-weight: bold ; color: seagreen">@item.Rol.RolAdi</td>}
 
             <td><a href="@Url.Action("YetkiBelirle", "Admin", new { id = @item.Kullanici.KullaniciID })"><button type="submit" class="btn btn-warning">Yetki Belirle</button></a></td>
         </tr>

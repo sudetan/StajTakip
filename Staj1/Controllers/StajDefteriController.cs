@@ -80,10 +80,6 @@ namespace StajTakip.Controllers
 
             }
 
-
-            //var veri = context.Kullanici.Where(x => x.KullaniciID == kullaniciId).Select(x => x.StajDurum.StajDurumID == 1).FirstOrDefault();
-            //ViewBag.data = veri;
-
             return View(Gmodel);
         }
 
@@ -147,18 +143,15 @@ namespace StajTakip.Controllers
             string savePath = "/StajDefterResimleri/images/";
             string dirPath = Server.MapPath(savePath);
 
-            //Create a directory if the directory does not exist
             if (!Directory.Exists(dirPath))
                 Directory.CreateDirectory(dirPath);
 
-            //Get image file names and extensions
+
             var fileName = Path.GetFileName(gd + "_" + upload.FileName);
 
-            //Use time to generate a new file name and save
-            //string newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
+
             upload.SaveAs(dirPath + "/" + fileName);
 
-            //After the upload is successful, we also need to return to the JSON format response
             return Json(new
             {
                 uploaded = 1,

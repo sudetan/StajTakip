@@ -100,7 +100,7 @@ namespace Staj1.FormReport
             pdfTable.CompleteRow();
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("Teknoloji Fakültesi  _ _ _ _ _ _ _ _ _ _ _ _ _  _ _ _ _ _ _  _ Mühendisliği Bölümü  _ _ _ _ _ _ _ _ _ numaralı öğrencisiyim.\r\n" +
+            pdfPCell = new PdfPCell(new Phrase("Teknoloji Fakültesi Bilisim Sistemleri Mühendisligi Bölümü  _ _ _ _ _ _ _ _ _ numaralı öğrencisiyim.\r\n" +
                 "            Kurumunuzda staj yapmamın uygun görülmesi halinde bu formun alttaki kısmını doldurularak fakültemiz ilgili bölüm başkanlığına \r\n" +
                 " gönderilmesini saygılarımla arz ederim.\r\nIsyeri uygulaması süresi içerisinde alınan rapor, istirahat vb. belgelerin aslını alınan gün içerisinde bölüm başkanlığına\r\n bildireceğimi beyan ve taahhüt ederim.\r\n", fontStyle));
             pdfPCell.Colspan = toplamSutun;
@@ -157,7 +157,7 @@ namespace Staj1.FormReport
             pdfTable.AddCell(pdfPCell);
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.TcKimlik_Numara", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.TcKimlik_Numara, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -174,7 +174,7 @@ namespace Staj1.FormReport
             pdfTable.AddCell(pdfPCell);
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Uyruk", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Uyruk, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -191,7 +191,7 @@ namespace Staj1.FormReport
             pdfTable.AddCell(pdfPCell);
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Ev_Numara", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Ev_Numara, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -209,7 +209,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Cep_Numara", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Cep_Numara.ToString(), fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -228,7 +228,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Mail", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Mail, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -237,7 +237,7 @@ namespace Staj1.FormReport
             pdfTable.AddCell(pdfPCell);
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 1);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Adres", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase("Adres", fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.LIGHT_GRAY;
@@ -247,11 +247,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("Lorem ipsum dolor sit amet, consectetur" +
-                " adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore" +
-                " magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco " +
-                "laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in" +
-                " reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Adres, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -298,7 +294,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.IsGunu", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.IsGunu.ToString(), fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -316,7 +312,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Baslangic_Tarihi", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Baslangic_Tarihi.ToLongDateString(), fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -335,7 +331,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Bitis_Tarihi", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Bitis_Tarihi.ToLongDateString(), fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -377,7 +373,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 1);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Soru2", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Soru2, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -396,7 +392,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 1);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Soru3", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Soru3, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -415,7 +411,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 1);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Soru4", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Soru4, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -511,7 +507,7 @@ namespace Staj1.FormReport
             pdfTable.AddCell(pdfPCell);
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 1);
-            pdfPCell = new PdfPCell(new Phrase("Resmi Adi", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase("Firma Adı", fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.LIGHT_GRAY;
@@ -521,7 +517,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Firma", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Firma, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_LEFT;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -542,7 +538,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Firma_Mail", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Firma_Mail, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_LEFT;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -561,7 +557,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Firma_Telefon", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Firma_Telefon, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_LEFT;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -580,7 +576,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Faks", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Faks, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_LEFT;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -599,7 +595,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Firma_Adres", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Firma_Adres, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -631,7 +627,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase("ogrenciler.Soru4", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Soru4, fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_LEFT;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;

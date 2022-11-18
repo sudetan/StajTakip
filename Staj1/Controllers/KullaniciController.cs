@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Staj1.FormReport;
 using Staj1.Controllers;
+using System.Web.Routing;
 
 namespace StajTakip.Controllers
 {
@@ -37,7 +38,7 @@ namespace StajTakip.Controllers
 
             return View(listele);
         }
-       
+
         public ActionResult GirisYap()
         {
             return View();
@@ -47,12 +48,17 @@ namespace StajTakip.Controllers
         public ActionResult GirisYap(Staj1.Models.Kullanici kl)
         {
             var kullaniciVarmi = context.Kullanici.FirstOrDefault(x => x.Numara == kl.Numara && x.Parola == kl.Parola);
-            
 
-                if (kullaniciVarmi == null)
+
+            if (kullaniciVarmi == null)
             {
                 ViewBag.Uyari = "Kullanıcı ad veya şifreniz hatalıdır. Lütfen tekrar deneyiniz. ";
                 return View();
+            }
+
+            if (!kullaniciVarmi.Status)
+            {
+                return RedirectToAction("SifremiYenile", new RouteValueDictionary(new { controller = "Kullanici", action = "SifremiYenile", Id = kullaniciVarmi.KullaniciID }));
             }
 
             var rolid = context.KullaniciRol.Where(x => x.KullaniciID == kullaniciVarmi.KullaniciID).Select(x => x.Rol.RolID == 2).FirstOrDefault();
@@ -113,6 +119,9 @@ namespace StajTakip.Controllers
             return View();
 
         }
+
+
+
 
         [Authorize(Roles = "Kullanici")]
         public ActionResult DosyaYukle()
@@ -224,7 +233,7 @@ namespace StajTakip.Controllers
             return View();
         }
 
-        
+
 
         [HttpPost]
         public ActionResult CikisYap()
@@ -284,28 +293,67 @@ namespace StajTakip.Controllers
             return View(data);
         }
 
-       
+
 
         [Authorize(Roles = "Kullanici")]
         public ActionResult StajBaslamaFormu()
         {
-            //string numara = User.Identity.Name;
-            //int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
-            //var listele = context.Kullanici.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault();
+            string numara = User.Identity.Name;
+            int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
+            var listele = context.Kullanici.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault();
+            StajBasvuruForm form = new StajBasvuruForm
+            {
+                Numara = listele.Numara,
+                Adi = listele.Adi,
+                Soyadi = listele.Soyadi
+            };
 
             //return View(listele);
-            return View();
+            return View(form);
 
         }
 
         [HttpPost]
         public FileContentResult Form(StajBasvuruForm form)
         {
-            
-            OgrenciReport ogrenciReport = new OgrenciReport();
-            byte[] abytes = ogrenciReport.ReportPdf(form);
+            try
+            {
+                string numara = User.Identity.Name;
+                var kullanici = context.Kullanici.Where(x => x.Numara == numara).FirstOrDefault();
 
-            return File(abytes, "application/pdf");
+                var stajAdi = context.StajAdi.Where(x => x.Adi == form.Soru1).FirstOrDefault();
+
+                form.Adi = kullanici.Adi;
+                form.Soyadi = kullanici.Soyadi;
+
+                OgrenciReport ogrenciReport = new OgrenciReport();
+                byte[] abytes = ogrenciReport.ReportPdf(form);
+
+
+                StajyerOgrenciBaslatma ogrenci = new StajyerOgrenciBaslatma
+                {
+                    IsyeriAdi = form.Firma,
+                    KullaniciID = kullanici.KullaniciID,
+                    ToplamCalismaSüresi = form.IsGunu,
+                    StajBaslangicTarihi = form.Baslangic_Tarihi,
+                    StajBitisTarihi = form.Bitis_Tarihi,
+                    Tarih = DateTime.Now,
+                    IsyeriAdresi = form.Firma_Adres,
+                    Kullanici = kullanici,
+                    StajAdi = stajAdi,
+                    StajAdiID = stajAdi.ID
+                };
+
+                var data = context.StajyerOgrenciBaslatma.Add(ogrenci);
+                context.SaveChanges();
+
+
+                return File(abytes, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
         }
 
         public List<StajBasvuruForm> GetOgrenciler()
@@ -351,11 +399,11 @@ namespace StajTakip.Controllers
                 }
             }
 
-            //Giriş Yapan Kullanıcının Bilgisini Yakalama
+
             string numara = User.Identity.Name;
             var kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
             var listele = context.Kullanici.Where(x => x.KullaniciID == kullaniciId).FirstOrDefault();
-            //Staj Adı bilgisisini alıp ID bilgisini yakalama
+
             int data = context.StajAdi.Where(x => x.Adi == stajAdi).Select(x => x.ID).FirstOrDefault();
 
             if (CumartesiCalisiyorMu == "Hayır")
@@ -364,11 +412,7 @@ namespace StajTakip.Controllers
                 int tsonuc = resmiTatil;
                 int calismasuresi = sonuc - tsonuc;
 
-                //if (calismasuresi > 30 || calismasuresi < 20)
-                //{
-                //    ViewBag.Mesaj1 = "Lütfen staj başlangıç ve bitiş tarihinizi yeniden seçiniz. Toplam çalışma gününüz hafta sonu ve resmi tatiller haricinde 20 günden az 30 günden fazla olmamalıdır.";
-                //    return View(listele);
-                //}
+
 
                 sob.HaftaIciGunSayisi = sonuc;
                 sob.ResmiTatilSayisi = tsonuc;
@@ -381,11 +425,7 @@ namespace StajTakip.Controllers
                 int tsonuc = resmiTatil;
                 int calismasuresi = sonuc - tsonuc;
 
-                //if (calismasuresi > 30 || calismasuresi < 20)
-                //{
-                //    ViewBag.Mesaj1 = "Lütfen staj başlangıç ve bitiş tarihinizi yeniden seçiniz. Toplam çalışma gününüz pazar günü ve resmi tatiller haricinde 20 günden az 30 günden fazla olmamalıdır.";
-                //    return View(listele);
-                //}
+
 
                 sob.HaftaIciGunSayisi = sonuc;
                 sob.ResmiTatilSayisi = tsonuc;
@@ -406,9 +446,46 @@ namespace StajTakip.Controllers
 
             ViewBag.Mesaj = "Staj Başvuru Formunuz Başarıyla Kaydedilmiştir.";
 
-  
+
 
             return View(listele);
+        }
+
+        private int ResmiTatilHesapla(DateTime? stajBaslangic, DateTime? stajBitis, string CumartesiCalisiyorMu)
+        {
+            var ResmiTatil1 = context.ResmiTatiller.Select(x => x.ResmiTatil).ToList();
+
+            DateTime ilkT = Convert.ToDateTime(stajBaslangic);
+            DateTime sonT = Convert.ToDateTime(stajBitis);
+            int resmiTatil = 0;
+
+            if (CumartesiCalisiyorMu == "Hayır")
+            {
+                foreach (DateTime rTatil in ResmiTatil1) //Resmi tatil listemizi foreach ile geziyoruz
+                {
+                    //resmi tatiller hafta sonuna denk geliyorsa aşagıdaki metod ile hafta sonlarını çıkarttığımızdan tekrar saymasına gerek yok
+                    //hafta içine denk gelen resmi tatilleri sayıyoruz.
+                    if ((rTatil.ToString("dddd") != "Cumartesi" && rTatil.ToString("dddd") != "Pazar") && (rTatil >= ilkT && rTatil <= sonT))
+                    {
+                        resmiTatil++;
+                    }
+                }
+            }
+
+            if (CumartesiCalisiyorMu == "Evet")
+            {
+                foreach (DateTime rTatil in ResmiTatil1) //Resmi tatil listemizi foreach ile geziyoruz
+                {
+                    //resmi tatiller hafta sonuna denk geliyorsa aşagıdaki metod ile hafta sonlarını çıkarttığımızdan tekrar saymasına gerek yok
+                    //hafta içine denk gelen resmi tatilleri sayıyoruz.
+                    if ((rTatil.ToString("dddd") != "Pazar") && (rTatil >= ilkT && rTatil <= sonT))
+                    {
+                        resmiTatil++;
+                    }
+                }
+            }
+
+            return resmiTatil;
         }
 
         public int CalismaHesapla(DateTime basTarih, DateTime bitTarih)//bu metod ile iki tarih arasındaki çalışma günlerini sayıyoruz. Cumartesi çalışmıyorsa
@@ -455,12 +532,12 @@ namespace StajTakip.Controllers
             string numara = User.Identity.Name;
             int kullaniciId = context.Kullanici.Where(x => x.Numara == numara).Select(x => x.KullaniciID).FirstOrDefault();
 
-            var data = context.StajyerOgrenciBaslatma.Where(x => x.Kullanici.KullaniciID == kullaniciId).ToList();
+            var data = context.StajyerOgrenciBaslatma.Where(x => x.Kullanici.KullaniciID == kullaniciId).OrderByDescending(x => x.Tarih).FirstOrDefault();
 
-            if (data.Count() == 0)
+            if (data == null)
             {
                 ViewBag.Mesaj = "Başvurunuz bulunmamaktadır. Lütfen staj başvuru formunu doldurup kaydediniz.";
-                return View(data);
+                return View();
             }
 
             ViewBag.Mesaj1 = "Staj başvuru formunuz sisteme kaydedilmiştir. Kaydedilen başvuru/başvurularınızı aşağıda görebilirsiniz.";
@@ -494,10 +571,9 @@ namespace StajTakip.Controllers
 
             if (CumartesiCalisiyorMu == "Hayır")
             {
-                foreach (DateTime rTatil in ResmiTatil1) //Resmi tatil listemizi foreach ile geziyoruz
+                foreach (DateTime rTatil in ResmiTatil1)
                 {
-                    //resmi tatiller hafta sonuna denk geliyorsa aşagıdaki metod ile hafta sonlarını çıkarttığımızdan tekrar saymasına gerek yok
-                    //hafta içine denk gelen resmi tatilleri sayıyoruz.
+
                     if ((rTatil.ToString("dddd") != "Cumartesi" && rTatil.ToString("dddd") != "Pazar") && (rTatil >= ilkT && rTatil <= sonT))
                     {
                         resmiTatil++;
@@ -507,10 +583,9 @@ namespace StajTakip.Controllers
 
             if (CumartesiCalisiyorMu == "Evet")
             {
-                foreach (DateTime rTatil in ResmiTatil1) //Resmi tatil listemizi foreach ile geziyoruz
+                foreach (DateTime rTatil in ResmiTatil1)
                 {
-                    //resmi tatiller hafta sonuna denk geliyorsa aşagıdaki metod ile hafta sonlarını çıkarttığımızdan tekrar saymasına gerek yok
-                    //hafta içine denk gelen resmi tatilleri sayıyoruz.
+
                     if ((rTatil.ToString("dddd") != "Pazar") && (rTatil >= ilkT && rTatil <= sonT))
                     {
                         resmiTatil++;
@@ -552,7 +627,7 @@ namespace StajTakip.Controllers
                 veri.ToplamCalismaSüresi = sonuc - tsonuc;
             }
 
-            //Giriş Yapan Kullanıcının Bilgisini Yakalama
+
 
             veri.IsyeriAdi = isAdi;
             veri.Kullanici.Numara = Numara;
@@ -643,8 +718,9 @@ namespace StajTakip.Controllers
 
                 WebMail.SmtpServer = "smtp.gmail.com";
                 WebMail.EnableSsl = true;
-                WebMail.UserName = "koustsmail@gmail.com"; // E-Posta adresinin gönderileceği sunucu adres
-                WebMail.Password = "vqrsjwkmzahicyum"; // E-posta adresinin şifresi
+                WebMail.UserName = "koustsmail@gmail.com";
+                WebMail.Password = "vqrsjwkmzahicyum";
+
                 WebMail.SmtpPort = 587;
                 WebMail.Send(data.Mail, "Şifre Yenileme Doğrulama Kodu", "Doğrulama Kodunuz : " + kod);
 
@@ -667,30 +743,25 @@ namespace StajTakip.Controllers
         }
 
         [HttpPost]
-        public ActionResult SifremiYenile(string Mail, string sifre, int kod, string sifreTekrar, int id)
+        public ActionResult SifremiYenile(string sifre, string sifreTekrar, int id)
         {
             var sifreunutan = context.Kullanici.Where(m => m.KullaniciID == id).SingleOrDefault();
-            var data = context.Kullanici.Where(m => m.Mail == Mail).SingleOrDefault();
 
-            if (kod == (int)Session["Kod"])
+
+            if (sifre == sifreTekrar)
             {
-                if (sifre == sifreTekrar)
-                {
-                    sifreunutan.Parola = sifre.ToString();
-                    context.SaveChanges();
-                    Session.Abandon();
-                    ViewBag.Uyari1 = "Şifre Değişimi Sağlandı! Giriş Yapabilirsiniz.";
-                    return View();
-                }
-                else
-                {
-                    ViewBag.Uyari = "Şifreleriniz eşleşmemektedir. Lütfen yeni parolanızı tekrardan kontrol ediniz!";
-                }
+                sifreunutan.Parola = sifre.ToString();
+                sifreunutan.Status = true;
+                context.SaveChanges();
+                Session.Abandon();
+                ViewBag.Uyari = "Şifre Değişimi Sağlandı! Giriş Yapabilirsiniz.";
+                return RedirectToAction("GirisYap","Kullanici");
             }
             else
             {
-                ViewBag.Uyari = "Bir hata oluştu. Kodunuzu, Mail Adresinizi kontrol ederek tekrar deneyiniz!";
+                ViewBag.Uyari = "Şifreleriniz eşleşmemektedir. Lütfen yeni parolanızı tekrardan kontrol ediniz!";
             }
+
 
 
             return View();

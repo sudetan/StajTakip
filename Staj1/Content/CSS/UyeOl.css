@@ -22,7 +22,7 @@
     width: 370px;
     margin-left: 355px;
     height: 1185px;
-    background-color: #F5F5F5
+    background-color: white
 }
 
 input[type=text], input[type=password], input[type=email] {
@@ -158,7 +158,7 @@ button {
 
 .UyeMisin-h3 {
     font-weight: bold;
-    font-style: italic;
+
     text-align: center;
     color: white;
     margin-top: 5px;
@@ -168,7 +168,7 @@ button {
     font-weight: bold;
     font-style: italic;
     text-align: center;
-    background-color: #FFA726;
+
     width: 800px;
     height: auto;
     margin-left: 170px;
