@@ -53,9 +53,9 @@
         
 
         public int IsGunu { get; set; }
-        public DateTime Baslangic_Tarihi { get; set; }
+        public DateTime stajBaslangic { get; set; }
 
-        public DateTime Bitis_Tarihi { get; set; }
+        public DateTime stajBitis { get; set; }
 
         public string Soru1 { get; set; }
         public string Soru2 { get; set; }

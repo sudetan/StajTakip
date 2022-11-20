@@ -312,7 +312,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Baslangic_Tarihi.ToLongDateString(), fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.stajBaslangic.ToLongDateString(), fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;
@@ -331,7 +331,7 @@ namespace Staj1.FormReport
 
 
             fontStyle = FontFactory.GetFont("Times New Roman", 8f, 0);
-            pdfPCell = new PdfPCell(new Phrase(ogrenciler.Bitis_Tarihi.ToLongDateString(), fontStyle));
+            pdfPCell = new PdfPCell(new Phrase(ogrenciler.stajBitis.ToLongDateString(), fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.WHITE;

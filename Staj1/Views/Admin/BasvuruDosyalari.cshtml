@@ -116,6 +116,7 @@
     <select style="font-size: 25px; width: 538px;text-align:center;margin-left:300px" onchange="StajBasvuruBelgesiGetir()" name="KullaniciID" id="KullaniciID">
         <option>Lütfen Öğrenci Adını Ve Soyadını Seçiniz</option>
         @foreach (var item in Model.kullanici)
+            
         {
 <option style="font-size:25px" value="@item.KullaniciID">@item.Adi @item.Soyadi</option>
 }

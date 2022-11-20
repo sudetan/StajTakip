@@ -33,21 +33,27 @@ namespace Staj1.Controllers
 
         [Authorize(Roles = "Admin,SuperAdmin,Kullanici,Komisyon,Eğitim Elemanı")]
         public ActionResult Index()
+
         {
 
-            var kullanicilar = context.Kullanici.Where(x => x.OgretmenId == 2419).ToList();
+            
 
-            List<KullaniciRol> kullaniciRolList = new List<KullaniciRol>();
+{
 
-            foreach (var item in kullanicilar)
-            {
-                var dataKRol = context.KullaniciRol.Where(x => x.KullaniciID == item.KullaniciID).FirstOrDefault();
-                kullaniciRolList.Add(dataKRol);
+                var kullanicilar = context.Kullanici.Where(x => x.OgretmenId == 2419).ToList();
+
+                List<KullaniciRol> kullaniciRolList = new List<KullaniciRol>();
+
+                foreach (var item in kullanicilar)
+                {
+                    var dataKRol = context.KullaniciRol.Where(x => x.KullaniciID == item.KullaniciID).FirstOrDefault();
+                    kullaniciRolList.Add(dataKRol);
+                }
+
+
+
+                return View(kullaniciRolList);
             }
-
-
-
-            return View(kullaniciRolList);
         }
 
         public void OgrenciKaydiSil(int id)
